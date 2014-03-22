@@ -19,6 +19,20 @@
 		FB848A8018BB558C004E538F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB848A6818BB558B004E538F /* UIKit.framework */; };
 		FB848A8818BB558C004E538F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = FB848A8618BB558C004E538F /* InfoPlist.strings */; };
 		FB848A8A18BB558C004E538F /* ArcanoidTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FB848A8918BB558C004E538F /* ArcanoidTests.m */; };
+		FB848A9618BB5695004E538F /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB848A9418BB5695004E538F /* MenuViewController.m */; };
+		FB848A9718BB5695004E538F /* MenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB848A9518BB5695004E538F /* MenuViewController.xib */; };
+		FB848AA118BFC86B004E538F /* GameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB848A9F18BFC86B004E538F /* GameViewController.m */; };
+		FB848AA218BFC86B004E538F /* GameViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB848AA018BFC86B004E538F /* GameViewController.xib */; };
+		FB848AA518C01178004E538F /* BrickView.m in Sources */ = {isa = PBXBuildFile; fileRef = FB848AA418C01178004E538F /* BrickView.m */; };
+		FBABB2ED18C32E0200400578 /* BallView.m in Sources */ = {isa = PBXBuildFile; fileRef = FBABB2EC18C32E0200400578 /* BallView.m */; };
+		FBABB2F118C36E9200400578 /* star_bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FBABB2F018C36E9200400578 /* star_bg.jpg */; };
+		FBABB2F418C3B44200400578 /* StickView.m in Sources */ = {isa = PBXBuildFile; fileRef = FBABB2F318C3B44200400578 /* StickView.m */; };
+		FBABB2F718C3DE9B00400578 /* ControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = FBABB2F618C3DE9B00400578 /* ControlView.m */; };
+		FBABB2FA18C639CC00400578 /* Brick.m in Sources */ = {isa = PBXBuildFile; fileRef = FBABB2F918C639CC00400578 /* Brick.m */; };
+		FBABB2FD18C67E6C00400578 /* Ball.m in Sources */ = {isa = PBXBuildFile; fileRef = FBABB2FC18C67E6C00400578 /* Ball.m */; };
+		FBD0B53A18D7A7F800555116 /* InfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = FBD0B53918D7A7F800555116 /* InfoView.m */; };
+		FBD0B54218DC435900555116 /* Collision.m in Sources */ = {isa = PBXBuildFile; fileRef = FBD0B54118DC435900555116 /* Collision.m */; };
+		FBE46F1F18CFBE2700D34AE3 /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = FBE46F1E18CFBE2700D34AE3 /* Player.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +62,31 @@
 		FB848A8518BB558C004E538F /* ArcanoidTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ArcanoidTests-Info.plist"; sourceTree = "<group>"; };
 		FB848A8718BB558C004E538F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		FB848A8918BB558C004E538F /* ArcanoidTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ArcanoidTests.m; sourceTree = "<group>"; };
+		FB848A9318BB5695004E538F /* MenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuViewController.h; sourceTree = "<group>"; };
+		FB848A9418BB5695004E538F /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
+		FB848A9518BB5695004E538F /* MenuViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MenuViewController.xib; sourceTree = "<group>"; };
+		FB848A9E18BFC86B004E538F /* GameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameViewController.h; sourceTree = "<group>"; };
+		FB848A9F18BFC86B004E538F /* GameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameViewController.m; sourceTree = "<group>"; };
+		FB848AA018BFC86B004E538F /* GameViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GameViewController.xib; sourceTree = "<group>"; };
+		FB848AA318C01178004E538F /* BrickView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrickView.h; sourceTree = "<group>"; };
+		FB848AA418C01178004E538F /* BrickView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrickView.m; sourceTree = "<group>"; };
+		FBABB2EB18C32E0200400578 /* BallView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BallView.h; sourceTree = "<group>"; };
+		FBABB2EC18C32E0200400578 /* BallView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BallView.m; sourceTree = "<group>"; };
+		FBABB2F018C36E9200400578 /* star_bg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = star_bg.jpg; path = ../../../../../Pictures/ios/star_bg.jpg; sourceTree = "<group>"; };
+		FBABB2F218C3B44200400578 /* StickView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StickView.h; sourceTree = "<group>"; };
+		FBABB2F318C3B44200400578 /* StickView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StickView.m; sourceTree = "<group>"; };
+		FBABB2F518C3DE9B00400578 /* ControlView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlView.h; sourceTree = "<group>"; };
+		FBABB2F618C3DE9B00400578 /* ControlView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ControlView.m; sourceTree = "<group>"; };
+		FBABB2F818C639CC00400578 /* Brick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Brick.h; sourceTree = "<group>"; };
+		FBABB2F918C639CC00400578 /* Brick.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Brick.m; sourceTree = "<group>"; };
+		FBABB2FB18C67E6C00400578 /* Ball.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ball.h; sourceTree = "<group>"; };
+		FBABB2FC18C67E6C00400578 /* Ball.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Ball.m; sourceTree = "<group>"; };
+		FBD0B53818D7A7F800555116 /* InfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfoView.h; sourceTree = "<group>"; };
+		FBD0B53918D7A7F800555116 /* InfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfoView.m; sourceTree = "<group>"; };
+		FBD0B54018DC435900555116 /* Collision.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Collision.h; sourceTree = "<group>"; };
+		FBD0B54118DC435900555116 /* Collision.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Collision.m; sourceTree = "<group>"; };
+		FBE46F1D18CFBE2700D34AE3 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
+		FBE46F1E18CFBE2700D34AE3 /* Player.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Player.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +116,7 @@
 		FB848A5818BB558B004E538F = {
 			isa = PBXGroup;
 			children = (
+				FB848A9B18BD465F004E538F /* Images */,
 				FB848A6A18BB558B004E538F /* Arcanoid */,
 				FB848A8318BB558C004E538F /* ArcanoidTests */,
 				FB848A6318BB558B004E538F /* Frameworks */,
@@ -107,10 +147,33 @@
 		FB848A6A18BB558B004E538F /* Arcanoid */ = {
 			isa = PBXGroup;
 			children = (
+				FBD0B53D18DC425D00555116 /* Collision */,
 				FB848A7318BB558B004E538F /* AppDelegate.h */,
 				FB848A7418BB558C004E538F /* AppDelegate.m */,
 				FB848A7618BB558C004E538F /* Images.xcassets */,
 				FB848A6B18BB558B004E538F /* Supporting Files */,
+				FB848A9318BB5695004E538F /* MenuViewController.h */,
+				FB848A9418BB5695004E538F /* MenuViewController.m */,
+				FB848A9518BB5695004E538F /* MenuViewController.xib */,
+				FB848A9E18BFC86B004E538F /* GameViewController.h */,
+				FB848A9F18BFC86B004E538F /* GameViewController.m */,
+				FBABB2FB18C67E6C00400578 /* Ball.h */,
+				FBABB2FC18C67E6C00400578 /* Ball.m */,
+				FBABB2F818C639CC00400578 /* Brick.h */,
+				FBABB2F918C639CC00400578 /* Brick.m */,
+				FB848AA018BFC86B004E538F /* GameViewController.xib */,
+				FB848AA318C01178004E538F /* BrickView.h */,
+				FB848AA418C01178004E538F /* BrickView.m */,
+				FBABB2EB18C32E0200400578 /* BallView.h */,
+				FBABB2EC18C32E0200400578 /* BallView.m */,
+				FBABB2F218C3B44200400578 /* StickView.h */,
+				FBABB2F318C3B44200400578 /* StickView.m */,
+				FBABB2F518C3DE9B00400578 /* ControlView.h */,
+				FBABB2F618C3DE9B00400578 /* ControlView.m */,
+				FBE46F1D18CFBE2700D34AE3 /* Player.h */,
+				FBE46F1E18CFBE2700D34AE3 /* Player.m */,
+				FBD0B53818D7A7F800555116 /* InfoView.h */,
+				FBD0B53918D7A7F800555116 /* InfoView.m */,
 			);
 			path = Arcanoid;
 			sourceTree = "<group>";
@@ -118,6 +181,7 @@
 		FB848A6B18BB558B004E538F /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				FBABB2F018C36E9200400578 /* star_bg.jpg */,
 				FB848A6C18BB558B004E538F /* Arcanoid-Info.plist */,
 				FB848A6D18BB558B004E538F /* InfoPlist.strings */,
 				FB848A7018BB558B004E538F /* main.m */,
@@ -142,6 +206,22 @@
 				FB848A8618BB558C004E538F /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		FB848A9B18BD465F004E538F /* Images */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
+		FBD0B53D18DC425D00555116 /* Collision */ = {
+			isa = PBXGroup;
+			children = (
+				FBD0B54018DC435900555116 /* Collision.h */,
+				FBD0B54118DC435900555116 /* Collision.m */,
+			);
+			name = Collision;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -220,7 +300,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				FB848A6F18BB558B004E538F /* InfoPlist.strings in Resources */,
+				FB848A9718BB5695004E538F /* MenuViewController.xib in Resources */,
 				FB848A7718BB558C004E538F /* Images.xcassets in Resources */,
+				FBABB2F118C36E9200400578 /* star_bg.jpg in Resources */,
+				FB848AA218BFC86B004E538F /* GameViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -239,8 +322,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FBD0B54218DC435900555116 /* Collision.m in Sources */,
+				FBABB2FD18C67E6C00400578 /* Ball.m in Sources */,
+				FB848AA118BFC86B004E538F /* GameViewController.m in Sources */,
 				FB848A7518BB558C004E538F /* AppDelegate.m in Sources */,
+				FB848AA518C01178004E538F /* BrickView.m in Sources */,
+				FB848A9618BB5695004E538F /* MenuViewController.m in Sources */,
+				FBABB2F718C3DE9B00400578 /* ControlView.m in Sources */,
+				FBE46F1F18CFBE2700D34AE3 /* Player.m in Sources */,
 				FB848A7118BB558B004E538F /* main.m in Sources */,
+				FBD0B53A18D7A7F800555116 /* InfoView.m in Sources */,
+				FBABB2FA18C639CC00400578 /* Brick.m in Sources */,
+				FBABB2ED18C32E0200400578 /* BallView.m in Sources */,
+				FBABB2F418C3B44200400578 /* StickView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -441,6 +535,7 @@
 				FB848A8F18BB558C004E538F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		FB848A9018BB558C004E538F /* Build configuration list for PBXNativeTarget "ArcanoidTests" */ = {
 			isa = XCConfigurationList;
@@ -449,6 +544,7 @@
 				FB848A9218BB558C004E538F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
