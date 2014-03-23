@@ -222,8 +222,8 @@
 
 -(void) checkStickCollision {
     Ball *ball = [Ball sharedBall];
-    Collision *collision = [[Collision alloc] init];
-    CollisionStruct c = [collision checkCollisionBall:ballView.frame withObject:stickView.frame];
+    Collision *collision = [[Collision alloc] initWithBall:ballView.frame andObject:stickView.frame];
+    CollisionStruct c = [collision checkCollisionBall];
     if (c.hCol)
         [ball setHDirection:[ball hDirection] * -1];
     if (c.vCol)
@@ -233,9 +233,10 @@
         
 -(void) optimazeCurrentSpeed : (float) distance {
     Ball *ball = [Ball sharedBall];
-    if (distance > 0 && distance < ball.settingsSpeed)
-        [ball setSpeed:distance];
-    else
+    if (distance > 0 && distance < ball.settingsSpeed) {
+        [ball setSpeed: distance];
+        NSLog(@"optimaze speed = %f", distance);
+    } else
         [ball setSpeed:[ball settingsSpeed]];
 }
 
@@ -258,11 +259,11 @@
 -(BOOL) isWallCollision {
     CGPoint ballCenter = ballView.center;
     if (gameFieldView.frame.size.width - ballCenter.x - ballView.frame.size.width / 2 < 1 && [[Ball sharedBall] hDirection] == 1) {
-//        NSLog(@"wall collision");
+        NSLog(@"wall collision");
         return YES;
     }
     else if (ballCenter.x - ballView.frame.size.width / 2 < 1 && [[Ball sharedBall] hDirection] == -1) {
-//         NSLog(@"wall collision");
+        NSLog(@"wall collision");
         return YES;
     } else
         return NO;
@@ -308,15 +309,15 @@
     BOOL isHcollision = NO;
     for (NSString *key in [brickViews allKeys]) {
         BrickView *brickView = [brickViews objectForKey:key];
-        Collision *collision = [[Collision alloc] init];
-        CollisionStruct c = [collision checkCollisionBall:ballView.frame withObject:brickView.frame];
+        Collision *collision = [[Collision alloc] initWithBall:ballView.frame andObject:brickView.frame];
+        CollisionStruct c = [collision checkCollisionBall];
         if (c.hCol) {
             NSLog(@"horizontal");
             isHcollision = YES;
             [self brickCollision:key];
         }
         if (c.vCol) {
-            NSLog(@"vertical");
+            NSLog(@"vertical distance %f", c.distance);
             isVcollision = YES;
             [self brickCollision:key];
         }
@@ -328,6 +329,8 @@
         [ball setHDirection:[ball hDirection] * -1];
     if (isVcollision)
         [ball setVDirection:[ball vDirection] * -1];
+    if (distance > 0)
+        NSLog(@"distance = %f", distance);
     [self optimazeCurrentSpeed:distance];
 }
     

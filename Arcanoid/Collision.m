@@ -10,16 +10,28 @@
 
 @implementation Collision
 
--(CollisionStruct)checkCollisionBall: (CGRect)ball withObject: (CGRect)obj {
+-(id)initWithBall:(CGRect)ballFrame andObject:(CGRect)objectFrame {
+    self = [self init];
+    if (self) {
+        ballModel = [Ball sharedBall];
+        ball = ballFrame;
+        object = objectFrame;
+    }
+    
+    return self;
+}
+
+-(CollisionStruct)checkCollisionBall {
     CollisionStruct collision;
     [self emptyCollisionStruct : &collision];
     CollisionStruct forecastCollision;
     [self emptyCollisionStruct : &forecastCollision];
-    [self forecastCollision:ball :obj : &forecastCollision];
+    [self forecastCollision: &forecastCollision];
  
     collision.distance = forecastCollision.distance;
-    if (collision.distance <= 1.0 && collision.distance >= 0) {
-        NSLog(@"distance %f", forecastCollision.distance);
+    if (forecastCollision.distance > 0)
+//        NSLog(@"distance = %f", forecastCollision.distance);
+    if (collision.distance <= 3.0 && collision.distance >= 0) {
         if (forecastCollision.hCol)
             collision.hCol = YES;
         if (forecastCollision.vCol)
@@ -35,19 +47,20 @@
     collision->vCol = NO;
 }
 
--(void) forecastCollision:(CGRect) ball : (CGRect)object : (CollisionStruct*) forecastCollision {
-    float distance = -1.0f;
-    forecastCollision->distance = distance;
-    if ([self isObjectFront:ball : object]) {
-        Ball *ballModel = [Ball sharedBall];
+-(void) forecastCollision: (CollisionStruct*) forecastCollision {
+    if ([self isObjectFront]) {
         //Прямая для шара по направлениям через его центр
         CGPoint ballCenter = [self getCenterCGRect:ball];
         float dx = ballModel.hDirection * cos(M_PI / 180 * [ballModel angle]) * [ballModel speed];
         float dy = ballModel.vDirection * sin(M_PI / 180 * [ballModel angle]) * [ballModel speed];
         CGPoint ballNextDirectCenter = CGPointMake(ballCenter.x + dx, ballCenter.y + dy);
-        //Параметры прямой шара
-        float ballLineCoeffs[3];
-        [self getLineCoeffs:ballCenter : ballNextDirectCenter: ballLineCoeffs];
+        float ballFirstLineCoeffs[3];
+        [self getLineCoeffs:ballCenter : ballNextDirectCenter: ballFirstLineCoeffs];
+        
+        CGPoint firstPointSeconfLine = CGPointMake(ballCenter.x + ballModel.hDirection * ball.size.width, ballCenter.y);
+        CGPoint secondPointSeconfLine = CGPointMake(ballNextDirectCenter.x + ballModel.hDirection * ball.size.width, ballNextDirectCenter.y);
+        float ballSecondLineCoeffs[3];
+        [self getLineCoeffs:firstPointSeconfLine: secondPointSeconfLine: ballSecondLineCoeffs];
         
         //Прямая для объекта через центр
         CGPoint objectCenter = [self getCenterCGRect:object];
@@ -65,38 +78,67 @@
         float botLineCoeffs[3];
         [self getLineCoeffs:botFirstPoint :botSecondPoint: botLineCoeffs];
         
-        float xtop = [self getXtwoLines:ballLineCoeffs :topLineCoeffs];
-        float xcenter = [self getXtwoLines:ballLineCoeffs :centerLineCoeffs];
-        float xbottom = [self getXtwoLines:ballLineCoeffs :botLineCoeffs];
-//        NSLog(@"xtop = %f, xcenter = %f, xbot = %f", xtop, xcenter, xbottom);
-        CGPoint collisonPoint;
-        float d;
-        if (xtop >= object.origin.x && xtop <= (object.origin.x + object.size.width) && xbottom >= object.origin.x && xbottom <= (object.origin.x + object.size.width)) {
-            d = object.size.height / 2;
-            collisonPoint = CGPointMake(xcenter + ballModel.hDirection * (-1) * d, object.origin.y + object.size.height / 2 + d * ballModel.vDirection * (-1));
-            forecastCollision->vCol = YES;
-        } else if (xtop >= object.origin.x && xtop <= (object.origin.x + object.size.width)) {
-            d = MIN(xtop - object.origin.x, object.origin.x + object.size.width - xtop);
-            collisonPoint = CGPointMake(xtop + ballModel.hDirection * (-1) * d, object.origin.y + d * ballModel.vDirection * (-1));
-            forecastCollision->hCol = YES;
-        } else if (xbottom >= object.origin.x && xbottom <= (object.origin.x + object.size.width)) {
-            d = MIN(xbottom - object.origin.x, object.origin.x + object.size.width - xbottom);
-            collisonPoint = CGPointMake(xbottom + ballModel.hDirection * (-1) * d, object.origin.y + object.size.height + d * ballModel.vDirection * (-1));
-            forecastCollision->hCol = YES;
-        }
+        float xftop = [self getXtwoLines:ballFirstLineCoeffs :topLineCoeffs];
+        float xfbottom = [self getXtwoLines:ballFirstLineCoeffs :botLineCoeffs];
         
+        float xstop = [self getXtwoLines:ballSecondLineCoeffs :topLineCoeffs];
+        float xsbottom = [self getXtwoLines:ballSecondLineCoeffs :botLineCoeffs];
+        
+       
         CGPoint collisonBallPoint = CGPointMake(ballModel.hDirection * ball.size.width / 2 + ballCenter.x, ballModel.vDirection * ball.size.height / 2 + ballCenter.y);
-        distance = sqrtf(fabsf(collisonPoint.x - collisonBallPoint.x) * fabsf(collisonPoint.x - collisonBallPoint.x) + fabsf(collisonPoint.y - collisonBallPoint.y) * fabsf(collisonPoint.y - collisonBallPoint.y));
-        forecastCollision->distance = distance;
-//        NSLog(@"distance = %f", forecastCollision->distance);
-    }
+        float distance1 = -1.0f, distance2 = -1.0f;
+        if([self isLineCollision:forecastCollision :xftop :xfbottom]) {
+//            NSLog(@"firstLine colPoint x = %f", collisonBallPoint.x);
+            distance1 = sqrtf(fabsf(collisionPoint.x - collisonBallPoint.x) * fabsf(collisionPoint.x - collisonBallPoint.x) + fabsf(collisionPoint.y - collisonBallPoint.y) * fabsf(collisionPoint.y - collisonBallPoint.y));
+        }
+        if([self isLineCollision: forecastCollision :xstop :xsbottom]) {
+           distance2 = sqrtf(fabsf(collisionPoint.x - collisonBallPoint.x) * fabsf(collisionPoint.x - collisonBallPoint.x) + fabsf(collisionPoint.y - collisonBallPoint.y) * fabsf(collisionPoint.y - collisonBallPoint.y));
+        }
+        if (distance1 > 0 && distance1 < distance2) {
+            forecastCollision->distance = distance1;
+//            NSLog(@"distance1 = %f", distance1);
+        } else if (distance2 > 0 && distance2 < distance1) {
+            forecastCollision->distance = distance2;
+//            NSLog(@"distance2 = %f", distance2);
+        } else
+            forecastCollision->distance = -1.0f;
+    } else
+        forecastCollision->distance = -1.0f;
 }
 
--(BOOL) isObjectFront: (CGRect) ball : (CGRect)obj {
-    if ([[Ball sharedBall] vDirection] == 1 && ball.origin.y < obj.origin.y) {
+-(BOOL) isLineCollision: (CollisionStruct*) collision : (float) xtop : (float) xbottom {
+    BOOL isLineCollision = NO;
+    float d = 0;
+    if (xtop >= object.origin.x && xtop <= (object.origin.x + object.size.width)) {
+        d = MIN(xtop - object.origin.x, object.origin.x + object.size.width - xtop);
+        if (ballModel.vDirection == 1) {
+            collision->vCol = YES;
+            collisionPoint = CGPointMake(xtop, object.origin.y);
+        } else {
+            collisionPoint = CGPointMake(xtop + ballModel.hDirection * (-1) * d, object.origin.y + d * ballModel.vDirection * (-1));
+            collision->hCol = YES;
+        }
+        isLineCollision = YES;
+    } else if (xbottom >= object.origin.x && xbottom <= (object.origin.x + object.size.width)) {
+        d = MIN(xbottom - object.origin.x, object.origin.x + object.size.width - xbottom);
+        if (ballModel.vDirection == -1) {
+            collision->vCol = YES;
+            collisionPoint = CGPointMake(xbottom, object.origin.y + object.size.height);
+        } else {
+            collisionPoint = CGPointMake(xbottom + ballModel.hDirection * (-1) * d, object.origin.y + object.size.height + d * ballModel.vDirection * (-1));
+            collision->hCol = YES;
+        }
+        isLineCollision = YES;
+    }
+    
+    return isLineCollision;
+}
+
+-(BOOL) isObjectFront {
+    if ([ballModel vDirection] == 1 && ball.origin.y < object.origin.y) {
         return YES;
     }
-    if ([[Ball sharedBall] vDirection] == -1 && ball.origin.y > obj.origin.y) {
+    if ([ballModel vDirection] == -1 && ball.origin.y > object.origin.y) {
         return YES;
     }
     

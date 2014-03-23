@@ -16,9 +16,15 @@ typedef struct {
 } CollisionStruct;
 
 @interface Collision : NSObject {
+    Ball* ballModel;
+    CGRect ball;
+    CGRect object;
+    
+    CGPoint collisionPoint;
 }
 
+-(id) initWithBall: (CGRect) ballFrame andObject: (CGRect) objectFrame;
 //if object's nil, check with walls
--(CollisionStruct) checkCollisionBall: (CGRect) ball withObject:  (CGRect) obj;
+-(CollisionStruct) checkCollisionBall;
 
 @end
