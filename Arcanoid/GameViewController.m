@@ -186,12 +186,34 @@
 */
 -(void)render {
     if (isRunning) {
+//        [self drawLine];
+        [self stickControl];
         [self ballMoving];
-        [self checkBricksCollision];
+        [self forecastCollision];
         [self checkStickCollision];
         [self checkBorderCollision];
-        [self stickControl];
+
     }
+}
+
+-(void) drawLine {
+    Ball *ballModel = [Ball sharedBall];
+    float dx = ballModel.hDirection * (cos(M_PI / 180 * [ballModel angle]) * [ballModel speed] + 50);
+    float dy = ballModel.vDirection * (sin(M_PI / 180 * [ballModel angle]) * [ballModel speed] + 50);
+    CGPoint ballNextDirectCenter = CGPointMake(ballView.center.x + dx, ballView.center.y + dy);
+    Collision *collision = [[Collision alloc] initWithBall:ballView.frame andObject:CGRectZero];
+    float line[3];
+    [collision getLineCoeffs:ballView.center :ballNextDirectCenter :line];
+    CGPoint p1 = CGPointMake(ballView.center.x, - line[2] / line[1] - ballView.center.x * line[0] / line[1]);
+    NSLog(@"center [%f, %f] =? [%f, %f]", ballView.center.x, ballView.center.y, p1.x, p1.y);
+    CGRect screenRect = gameFieldView.frame;
+    float x = screenRect.size.width;
+    CGPoint p2 = CGPointMake(100, - line[2] / line[1] - x * line[0]);
+    points = malloc(2 * sizeof(CGPoint));
+    points[0] = ballView.center;
+    points[1] = ballNextDirectCenter;
+    ballLine = [[LineView alloc] initWithPoints:points :2];
+    [gameFieldView addSubview:ballLine];
 }
 
 -(void) ballAnimation {
@@ -202,8 +224,6 @@
     Ball *ball = [Ball sharedBall];
     float dx = ball.hDirection * cos(M_PI / 180 * [ball angle]) * [ball speed];
     float dy = ball.vDirection * sin(M_PI / 180 * [ball angle]) * [ball speed];
-//    NSLog(@"dx = %f  dy = %f", dx, dy);
-//    NSLog(@"h direct %i", ball.hDirection);
     [ballView setCenter:CGPointMake(ballView.center.x + dx, ballView.center.y + dy)];
     [ballView setNeedsDisplay];
 }
@@ -222,13 +242,16 @@
 
 -(void) checkStickCollision {
     Ball *ball = [Ball sharedBall];
-    Collision *collision = [[Collision alloc] initWithBall:ballView.frame andObject:stickView.frame];
-    CollisionStruct c = [collision checkCollisionBall];
-    if (c.hCol)
-        [ball setHDirection:[ball hDirection] * -1];
-    if (c.vCol)
-        [ball setVDirection:[ball vDirection] * -1];
-    [self optimazeCurrentSpeed:c.distance];
+    Collision *stickCollision = [[Collision alloc] initWithBall:ballView.frame andObject:stickView.frame];
+    CollisionStruct collision = [stickCollision forecastCollisionBall];
+    if (collision.distance <= 0.5f) {
+        if (collision.hCol)
+            [ball setHDirection:[ball hDirection] * -1];
+        if (collision.vCol)
+            [ball setVDirection:[ball vDirection] * -1];
+    }
+    if (collision.distance > 0)
+        [self optimazeCurrentSpeed:collision.distance];
 }
         
 -(void) optimazeCurrentSpeed : (float) distance {
@@ -302,35 +325,26 @@
 На вход подается CGRect (с ним производится проверка коллизий ballView)
 */
 
--(void) checkBricksCollision {
+-(void) forecastCollision {
     Ball *ball = [Ball sharedBall];
     float distance = -1;
-    BOOL isVcollision = NO;
-    BOOL isHcollision = NO;
     for (NSString *key in [brickViews allKeys]) {
         BrickView *brickView = [brickViews objectForKey:key];
         Collision *collision = [[Collision alloc] initWithBall:ballView.frame andObject:brickView.frame];
-        CollisionStruct c = [collision checkCollisionBall];
-        if (c.hCol) {
-            NSLog(@"horizontal");
-            isHcollision = YES;
-            [self brickCollision:key];
-        }
-        if (c.vCol) {
-            NSLog(@"vertical distance %f", c.distance);
-            isVcollision = YES;
-            [self brickCollision:key];
-        }
+        CollisionStruct c = [collision forecastCollisionBall];
         if (distance < 0 || (distance > c.distance && c.distance > 0)) {
             distance = c.distance;
         }
+        
+        if (c.distance >= 0 && c.distance < 0.5f) {
+            [self brickCollision:key];
+            if (c.hCol)
+                [ball setHDirection: [ball hDirection] * (-1)];
+            if (c.vCol)
+                [ball setVDirection: [ball vDirection] * (-1)];
+        }
     }
-    if (isHcollision)
-        [ball setHDirection:[ball hDirection] * -1];
-    if (isVcollision)
-        [ball setVDirection:[ball vDirection] * -1];
-    if (distance > 0)
-        NSLog(@"distance = %f", distance);
+   
     [self optimazeCurrentSpeed:distance];
 }
     
@@ -344,49 +358,33 @@
     [self updateScore];
 }
 
-//-(BOOL)collision : (CGRect) object {
-//    Ball *ball = [Ball sharedBall];
-//    BOOL isVCollision = NO;
-//    BOOL isHCollision = NO;
-//    CGPoint ballCenter = [ballView center];
-//    CGPoint brickCenter = CGPointMake(object.origin.x + object.size.width / 2, object.origin.y + object.size.height / 2);
-//    if (sqrt(pow(fabs(brickCenter.x - brickCenter.x), 2) + pow(fabs(brickCenter.y - brickCenter.y), 2)) <=
-//        sqrt(pow(ballView.bounds.size.height / 2, 2) + pow(ballView.bounds.size.width / 2, 2)) + sqrt(pow(object.size.height / 2, 2) + pow(object.size.width / 2, 2))) {
-//        float h = object.size.height / 5;
-//        float w = h;
-//        int n = object.size.width / w;
-//        int m = object.size.height / h;
-//        
-//        for (int i = 0; i < m; i++) {
-//            for (int j = 0; j < n; j++) {
-//                float originX = object.origin.x + j * w;
-//                float originY = object.origin.y + i * h;
-//                CGPoint center = CGPointMake(originX + w / 2, originY + h / 2);
-//                float distance =  sqrtf(fabsf(ballCenter.x - center.x) * fabsf(ballCenter.x - center.x) + fabsf(ballCenter.y - center.y) * fabsf(ballCenter.y - center.y));
-//                if (distance  <=  (w / 2 + ballView.frame.size.height) / 2) {
-//                    if (i == (m - 1) || i == 0) {
-//                        NSLog(@"v j = %i, i = %i", j, i);
-//                        isVCollision = YES;
-//                    } else {
-//                        NSLog(@"h j = %i, i = %i", j, i);
-//                        isHCollision = YES;
-//                    }
-//                    break;
-//                }
-//            }
-//        }
-//    }
-//    if (isHCollision)
-//        [ball setHDirection:[ball hDirection] * -1];
-//    if (isVCollision) {
-////        [ball setHDirection:[ball hDirection] * -1];
-//        [ball setVDirection:[ball vDirection] * -1];
-//    }
-//    if (isVCollision || isHCollision)
-//        return  YES;
-//    
-//    return NO;
-//
-//}
+-(void)collision : (CGRect) object {
+    Ball *ball = [Ball sharedBall];
+    CGPoint ballCenter = [ballView center];
+   
+    float h = object.size.height / 5;
+    float w = h;
+    int n = object.size.width / w;
+    int m = object.size.height / h;
+        
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            float originX = object.origin.x + j * w;
+            float originY = object.origin.y + i * h;
+            CGPoint center = CGPointMake(originX + w / 2, originY + h / 2);
+            float distance =  sqrtf(fabsf(ballCenter.x - center.x) * fabsf(ballCenter.x - center.x) + fabsf(ballCenter.y - center.y) * fabsf(ballCenter.y - center.y));
+            
+            if (distance  <=  (w / 2 + ballView.frame.size.height) / 2) {
+//                [self brickCollision:nearbyObject];
+//                nearbyObject = nil;
+//                if (collisionForecast.hCol)
+//                    [ball setHDirection: [ball hDirection] * -1];
+//                if (collisionForecast.vCol)
+//                    [ball setVDirection: [ball vDirection] * -1];
+                break;
+            }
+        }
+    }
+}
 
 @end

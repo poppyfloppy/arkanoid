@@ -24,6 +24,7 @@
 		FB848AA118BFC86B004E538F /* GameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB848A9F18BFC86B004E538F /* GameViewController.m */; };
 		FB848AA218BFC86B004E538F /* GameViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB848AA018BFC86B004E538F /* GameViewController.xib */; };
 		FB848AA518C01178004E538F /* BrickView.m in Sources */ = {isa = PBXBuildFile; fileRef = FB848AA418C01178004E538F /* BrickView.m */; };
+		FBA03EAC18E0677600599AB5 /* LineView.m in Sources */ = {isa = PBXBuildFile; fileRef = FBA03EAB18E0677600599AB5 /* LineView.m */; };
 		FBABB2ED18C32E0200400578 /* BallView.m in Sources */ = {isa = PBXBuildFile; fileRef = FBABB2EC18C32E0200400578 /* BallView.m */; };
 		FBABB2F118C36E9200400578 /* star_bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FBABB2F018C36E9200400578 /* star_bg.jpg */; };
 		FBABB2F418C3B44200400578 /* StickView.m in Sources */ = {isa = PBXBuildFile; fileRef = FBABB2F318C3B44200400578 /* StickView.m */; };
@@ -70,6 +71,8 @@
 		FB848AA018BFC86B004E538F /* GameViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GameViewController.xib; sourceTree = "<group>"; };
 		FB848AA318C01178004E538F /* BrickView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrickView.h; sourceTree = "<group>"; };
 		FB848AA418C01178004E538F /* BrickView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrickView.m; sourceTree = "<group>"; };
+		FBA03EAA18E0677600599AB5 /* LineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LineView.h; sourceTree = "<group>"; };
+		FBA03EAB18E0677600599AB5 /* LineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LineView.m; sourceTree = "<group>"; };
 		FBABB2EB18C32E0200400578 /* BallView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BallView.h; sourceTree = "<group>"; };
 		FBABB2EC18C32E0200400578 /* BallView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BallView.m; sourceTree = "<group>"; };
 		FBABB2F018C36E9200400578 /* star_bg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = star_bg.jpg; path = ../../../../../Pictures/ios/star_bg.jpg; sourceTree = "<group>"; };
@@ -174,6 +177,8 @@
 				FBE46F1E18CFBE2700D34AE3 /* Player.m */,
 				FBD0B53818D7A7F800555116 /* InfoView.h */,
 				FBD0B53918D7A7F800555116 /* InfoView.m */,
+				FBA03EAA18E0677600599AB5 /* LineView.h */,
+				FBA03EAB18E0677600599AB5 /* LineView.m */,
 			);
 			path = Arcanoid;
 			sourceTree = "<group>";
@@ -324,6 +329,7 @@
 			files = (
 				FBD0B54218DC435900555116 /* Collision.m in Sources */,
 				FBABB2FD18C67E6C00400578 /* Ball.m in Sources */,
+				FBA03EAC18E0677600599AB5 /* LineView.m in Sources */,
 				FB848AA118BFC86B004E538F /* GameViewController.m in Sources */,
 				FB848A7518BB558C004E538F /* AppDelegate.m in Sources */,
 				FB848AA518C01178004E538F /* BrickView.m in Sources */,

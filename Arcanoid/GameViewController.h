@@ -11,6 +11,8 @@
 #import "StickView.h"
 #import "ControlView.h"
 #import "InfoView.h"
+#import "Collision.h"
+#import "LineView.h"
 
 #define EXPLOSION_NUMBER_PICTURES 48
 
@@ -39,6 +41,9 @@
     
     UIImageView *explosionView;
     NSMutableArray *explosionPics;
+
+    CGPoint *points;
+    LineView *ballLine;
 }
 
 -(void)render;

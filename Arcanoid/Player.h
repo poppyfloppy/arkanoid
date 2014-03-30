@@ -8,6 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Player : NSObject
+@interface Player : NSObject {
+    
+}
+
+@property int live;
 
 @end

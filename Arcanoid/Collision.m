@@ -21,24 +21,12 @@
     return self;
 }
 
--(CollisionStruct)checkCollisionBall {
-    CollisionStruct collision;
-    [self emptyCollisionStruct : &collision];
+-(CollisionStruct) forecastCollisionBall {
     CollisionStruct forecastCollision;
     [self emptyCollisionStruct : &forecastCollision];
     [self forecastCollision: &forecastCollision];
- 
-    collision.distance = forecastCollision.distance;
-    if (forecastCollision.distance > 0)
-//        NSLog(@"distance = %f", forecastCollision.distance);
-    if (collision.distance <= 3.0 && collision.distance >= 0) {
-        if (forecastCollision.hCol)
-            collision.hCol = YES;
-        if (forecastCollision.vCol)
-            collision.vCol = YES;
-    }
     
-    return collision;
+    return forecastCollision;
 }
 
 -(void)emptyCollisionStruct: (CollisionStruct*) collision {
@@ -49,85 +37,58 @@
 
 -(void) forecastCollision: (CollisionStruct*) forecastCollision {
     if ([self isObjectFront]) {
-        //Прямая для шара по направлениям через его центр
+    
         CGPoint ballCenter = [self getCenterCGRect:ball];
-        float dx = ballModel.hDirection * cos(M_PI / 180 * [ballModel angle]) * [ballModel speed];
-        float dy = ballModel.vDirection * sin(M_PI / 180 * [ballModel angle]) * [ballModel speed];
-        CGPoint ballNextDirectCenter = CGPointMake(ballCenter.x + dx, ballCenter.y + dy);
+        int ballDirection[2] = {ballModel.hDirection, ballModel.vDirection};
+        
+        CGPoint p1Ball = CGPointMake(ballCenter.x + ball.size.width / 2 * ballModel.hDirection, ballCenter.y + ball.size.height / 2 * ballModel.vDirection);
         float ballFirstLineCoeffs[3];
-        [self getLineCoeffs:ballCenter : ballNextDirectCenter: ballFirstLineCoeffs];
-        
-        CGPoint firstPointSeconfLine = CGPointMake(ballCenter.x + ballModel.hDirection * ball.size.width, ballCenter.y);
-        CGPoint secondPointSeconfLine = CGPointMake(ballNextDirectCenter.x + ballModel.hDirection * ball.size.width, ballNextDirectCenter.y);
+        [self getLineForPoint:p1Ball angle:ballModel.angle vectorDirection:ballDirection outputLine:ballFirstLineCoeffs];
+        CGPoint p2Ball = CGPointMake(p1Ball.x + ballModel.hDirection * (-1) * ball.size.width, p1Ball.y);
         float ballSecondLineCoeffs[3];
-        [self getLineCoeffs:firstPointSeconfLine: secondPointSeconfLine: ballSecondLineCoeffs];
+        [self getLineForPoint:p2Ball angle:ballModel.angle vectorDirection:ballDirection outputLine:ballSecondLineCoeffs];
         
-        //Прямая для объекта через центр
-        CGPoint objectCenter = [self getCenterCGRect:object];
-        CGPoint objectSecondPoint = CGPointMake(object.origin.x + object.size.width, object.origin.y + object.size.height / 2);
-        float centerLineCoeffs[3];
-        [self getLineCoeffs:objectCenter :objectSecondPoint :centerLineCoeffs];
+        int vDirection[2] = {0, 1};
+        int hDirection[2] = {1, 0};
+        CGPoint objectCenter =  [self getCenterCGRect:object];
         
-        CGPoint topFirstPoint = object.origin;
-        CGPoint topSecondPoint = CGPointMake(object.origin.x + object.size.width, object.origin.y);
-        float topLineCoeffs[3];
-        [self getLineCoeffs:topFirstPoint :topSecondPoint: topLineCoeffs];
+        CGPoint p1Object = CGPointMake(objectCenter.x - object.size.width / 2 * ballModel.hDirection, objectCenter.y);
+        CGPoint p2Object = CGPointMake(objectCenter.x, objectCenter.y - object.size.height / 2 * ballModel.vDirection);
+        float line1Coeffs[3];
+        [self getLineForPoint:p1Object angle:90 vectorDirection:vDirection outputLine:line1Coeffs];
+
+        float line2Coeffs[3];
+        [self getLineForPoint:p2Object angle:0 vectorDirection:hDirection outputLine:line2Coeffs];
         
-        CGPoint botFirstPoint = CGPointMake(object.origin.x, object.origin.y + object.size.height);
-        CGPoint botSecondPoint = CGPointMake(object.origin.x + object.size.width, object.origin.y + object.size.height);
-        float botLineCoeffs[3];
-        [self getLineCoeffs:botFirstPoint :botSecondPoint: botLineCoeffs];
+        CGPoint l1Balll1Object = [self getCollisionPoint:ballFirstLineCoeffs :line1Coeffs];
+        CGPoint l1Balll2Object = [self getCollisionPoint:ballFirstLineCoeffs :line2Coeffs];
         
-        float xftop = [self getXtwoLines:ballFirstLineCoeffs :topLineCoeffs];
-        float xfbottom = [self getXtwoLines:ballFirstLineCoeffs :botLineCoeffs];
+        CGPoint l2Balll1Object = [self getCollisionPoint:ballSecondLineCoeffs :line1Coeffs];
+        CGPoint l2Balll2Object = [self getCollisionPoint:ballSecondLineCoeffs :line2Coeffs];
         
-        float xstop = [self getXtwoLines:ballSecondLineCoeffs :topLineCoeffs];
-        float xsbottom = [self getXtwoLines:ballSecondLineCoeffs :botLineCoeffs];
-        
-       
-        CGPoint collisonBallPoint = CGPointMake(ballModel.hDirection * ball.size.width / 2 + ballCenter.x, ballModel.vDirection * ball.size.height / 2 + ballCenter.y);
-        float distance1 = -1.0f, distance2 = -1.0f;
-        if([self isLineCollision:forecastCollision :xftop :xfbottom]) {
-//            NSLog(@"firstLine colPoint x = %f", collisonBallPoint.x);
-            distance1 = sqrtf(fabsf(collisionPoint.x - collisonBallPoint.x) * fabsf(collisionPoint.x - collisonBallPoint.x) + fabsf(collisionPoint.y - collisonBallPoint.y) * fabsf(collisionPoint.y - collisonBallPoint.y));
-        }
-        if([self isLineCollision: forecastCollision :xstop :xsbottom]) {
-           distance2 = sqrtf(fabsf(collisionPoint.x - collisonBallPoint.x) * fabsf(collisionPoint.x - collisonBallPoint.x) + fabsf(collisionPoint.y - collisonBallPoint.y) * fabsf(collisionPoint.y - collisonBallPoint.y));
-        }
-        if (distance1 > 0 && distance1 < distance2) {
-            forecastCollision->distance = distance1;
-//            NSLog(@"distance1 = %f", distance1);
-        } else if (distance2 > 0 && distance2 < distance1) {
-            forecastCollision->distance = distance2;
-//            NSLog(@"distance2 = %f", distance2);
+        if ([self isLineCollision:forecastCollision :l1Balll2Object :l1Balll1Object]) {
+            CGPoint collisionPoint = forecastCollision->collisionPoint;
+            CGPoint collisonBallPoint = CGPointMake(ballModel.hDirection * ball.size.width / 2 + ballCenter.x, ballModel.vDirection * ball.size.height / 2 + ballCenter.y);
+            forecastCollision->distance = sqrtf(fabsf(collisionPoint.x - collisonBallPoint.x) * fabsf(collisionPoint.x - collisonBallPoint.x) + fabsf(collisionPoint.y - collisonBallPoint.y) * fabsf(collisionPoint.y - collisonBallPoint.y));
+        } else if ([self isLineCollision: forecastCollision :l2Balll2Object :l2Balll1Object]) {
+            CGPoint collisionPoint = forecastCollision->collisionPoint;
+            CGPoint collisonBallPoint = CGPointMake(ballModel.hDirection * (-1) * ball.size.width / 2 + ballCenter.x, ballModel.vDirection * ball.size.height / 2 + ballCenter.y);
+            forecastCollision->distance = sqrtf(fabsf(collisionPoint.x - collisonBallPoint.x) * fabsf(collisionPoint.x - collisonBallPoint.x) + fabsf(collisionPoint.y - collisonBallPoint.y) * fabsf(collisionPoint.y - collisonBallPoint.y));
         } else
             forecastCollision->distance = -1.0f;
     } else
         forecastCollision->distance = -1.0f;
 }
 
--(BOOL) isLineCollision: (CollisionStruct*) collision : (float) xtop : (float) xbottom {
+-(BOOL) isLineCollision: (CollisionStruct*) collision : (CGPoint) hPoint : (CGPoint) vPoint {
     BOOL isLineCollision = NO;
-    float d = 0;
-    if (xtop >= object.origin.x && xtop <= (object.origin.x + object.size.width)) {
-        d = MIN(xtop - object.origin.x, object.origin.x + object.size.width - xtop);
-        if (ballModel.vDirection == 1) {
-            collision->vCol = YES;
-            collisionPoint = CGPointMake(xtop, object.origin.y);
-        } else {
-            collisionPoint = CGPointMake(xtop + ballModel.hDirection * (-1) * d, object.origin.y + d * ballModel.vDirection * (-1));
-            collision->hCol = YES;
-        }
+    if (hPoint.x >= object.origin.x && hPoint.x <= (object.origin.x + object.size.width)) {
+        collision->vCol = YES;
+        collision->collisionPoint = hPoint;
         isLineCollision = YES;
-    } else if (xbottom >= object.origin.x && xbottom <= (object.origin.x + object.size.width)) {
-        d = MIN(xbottom - object.origin.x, object.origin.x + object.size.width - xbottom);
-        if (ballModel.vDirection == -1) {
-            collision->vCol = YES;
-            collisionPoint = CGPointMake(xbottom, object.origin.y + object.size.height);
-        } else {
-            collisionPoint = CGPointMake(xbottom + ballModel.hDirection * (-1) * d, object.origin.y + object.size.height + d * ballModel.vDirection * (-1));
-            collision->hCol = YES;
-        }
+    } else if (vPoint.y >= object.origin.y && vPoint.y <= (object.origin.y + object.size.height)) {
+        collision->hCol = YES;
+        collision->collisionPoint = vPoint;
         isLineCollision = YES;
     }
     
@@ -157,10 +118,19 @@
     coeffs[2] = p1.x * p2.y - p2.x * p1.y;
 }
 
--(float) getXtwoLines : (float*) line1 : (float*) line2 {
+-(CGPoint) getCollisionPoint: (float*) line1 : (float*) line2 {
     float x = (line1[1] * line2[2] - line1[2] * line2[1]) / (line1[0] * line2[1] - line2[0] * line1[1]);
+    float y = (line1[2] * line2[0] - line1[0] * line2[2]) / (line1[0] * line2[1] - line2[0] * line1[1]);
     
-    return x;
+    return CGPointMake(x, y);
 }
+
+-(void) getLineForPoint: (CGPoint) p1 angle: (float)angle  vectorDirection: (int*) vectorDirection outputLine: (float*) line {
+    float dx = vectorDirection[0] * cos(M_PI / 180 * angle) * 10;
+    float dy = vectorDirection[1] * sin(M_PI / 180 * angle) * 10;
+    CGPoint p2 = CGPointMake(p1.x + dx, p1.y + dy);
+    [self getLineCoeffs:p1 :p2 :line];
+}
+
 
 @end

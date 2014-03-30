@@ -13,18 +13,18 @@ typedef struct {
     BOOL vCol;
     BOOL hCol;
     float distance;
+    CGPoint collisionPoint;
 } CollisionStruct;
 
 @interface Collision : NSObject {
     Ball* ballModel;
     CGRect ball;
     CGRect object;
-    
-    CGPoint collisionPoint;
 }
 
 -(id) initWithBall: (CGRect) ballFrame andObject: (CGRect) objectFrame;
 //if object's nil, check with walls
--(CollisionStruct) checkCollisionBall;
+-(CollisionStruct) forecastCollisionBall;
+-(void) getLineCoeffs : (CGPoint)p1 : (CGPoint)p2 : (float*) coeffs;
 
 @end

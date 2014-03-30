@@ -8,9 +8,9 @@
 
 #import "Player.h"
 
-@implementation Player {
-    
-}
+@implementation Player
+@synthesize live;
 
+    
 
 @end
