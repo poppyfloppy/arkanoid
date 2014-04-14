@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Ball.h"
+#import "Actor.h"
 
 typedef struct {
     BOOL vCol;
@@ -17,13 +17,13 @@ typedef struct {
 } CollisionStruct;
 
 @interface Collision : NSObject {
-    Ball* ballModel;
-    CGRect ball;
-    CGRect object;
+    Actor* actorModel;
+    CGRect actor1;
+    CGRect actor2;
 }
 
--(id) initWithBall: (CGRect) ballFrame andObject: (CGRect) objectFrame;
-//if object's nil, check with walls
+-(id) initWithActor: (Actor*) actor: (CGRect) actor1Frame andObject: (CGRect) actor2Frame;
+
 -(CollisionStruct) forecastCollisionBall;
 -(void) getLineCoeffs : (CGPoint)p1 : (CGPoint)p2 : (float*) coeffs;
 

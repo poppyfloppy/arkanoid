@@ -7,17 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Actor.h"
 
-@interface Ball : NSObject {
+@interface Ball : Actor {
 }
 
 @property (nonatomic) int radius;
 @property (nonatomic) float speed;
 @property (nonatomic) float settingsSpeed;
-@property (nonatomic) int angle;
 @property (nonatomic) UIColor *color;
-@property (nonatomic) int vDirection;
-@property (nonatomic) int hDirection;
 
 +(Ball*) sharedBall;
 

@@ -44,6 +44,7 @@
 
     CGPoint *points;
     LineView *ballLine;
+    __weak IBOutlet UIView *mainView;
 }
 
 -(void)render;

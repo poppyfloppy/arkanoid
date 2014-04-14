@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FB7EFF9A18F5F54700AF7895 /* Actor.m in Sources */ = {isa = PBXBuildFile; fileRef = FB7EFF9918F5F54700AF7895 /* Actor.m */; };
 		FB848A6518BB558B004E538F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB848A6418BB558B004E538F /* Foundation.framework */; };
 		FB848A6718BB558B004E538F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB848A6618BB558B004E538F /* CoreGraphics.framework */; };
 		FB848A6918BB558B004E538F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB848A6818BB558B004E538F /* UIKit.framework */; };
@@ -47,6 +48,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		FB7EFF9818F5F54700AF7895 /* Actor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Actor.h; sourceTree = "<group>"; };
+		FB7EFF9918F5F54700AF7895 /* Actor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Actor.m; sourceTree = "<group>"; };
 		FB848A6118BB558B004E538F /* Arcanoid.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Arcanoid.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FB848A6418BB558B004E538F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		FB848A6618BB558B004E538F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -179,6 +182,8 @@
 				FBD0B53918D7A7F800555116 /* InfoView.m */,
 				FBA03EAA18E0677600599AB5 /* LineView.h */,
 				FBA03EAB18E0677600599AB5 /* LineView.m */,
+				FB7EFF9818F5F54700AF7895 /* Actor.h */,
+				FB7EFF9918F5F54700AF7895 /* Actor.m */,
 			);
 			path = Arcanoid;
 			sourceTree = "<group>";
@@ -333,6 +338,7 @@
 				FB848AA118BFC86B004E538F /* GameViewController.m in Sources */,
 				FB848A7518BB558C004E538F /* AppDelegate.m in Sources */,
 				FB848AA518C01178004E538F /* BrickView.m in Sources */,
+				FB7EFF9A18F5F54700AF7895 /* Actor.m in Sources */,
 				FB848A9618BB5695004E538F /* MenuViewController.m in Sources */,
 				FBABB2F718C3DE9B00400578 /* ControlView.m in Sources */,
 				FBE46F1F18CFBE2700D34AE3 /* Player.m in Sources */,

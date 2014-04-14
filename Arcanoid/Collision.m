@@ -10,12 +10,12 @@
 
 @implementation Collision
 
--(id)initWithBall:(CGRect)ballFrame andObject:(CGRect)objectFrame {
+-(id)initWithActor:(Actor *)actor :(CGRect)actor1Frame andObject:(CGRect)actor2Frame {
     self = [self init];
     if (self) {
-        ballModel = [Ball sharedBall];
-        ball = ballFrame;
-        object = objectFrame;
+        actorModel = actor;
+        actor1 = actor1Frame;
+        actor2 = actor2Frame;
     }
     
     return self;
@@ -38,15 +38,16 @@
 -(void) forecastCollision: (CollisionStruct*) forecastCollision {
     if ([self isObjectFront]) {
     
-        CGPoint ballCenter = [self getCenterCGRect:ball];
-        int ballDirection[2] = {ballModel.hDirection, ballModel.vDirection};
+        CGPoint actor1Center = [self getCenterCGRect:actor1];
+        int actor1Direction[2] = {actorModel.hDirection, actorModel.vDirection};
         
-        CGPoint p1Ball = CGPointMake(ballCenter.x + ball.size.width / 2 * ballModel.hDirection, ballCenter.y + ball.size.height / 2 * ballModel.vDirection);
-        float ballFirstLineCoeffs[3];
-        [self getLineForPoint:p1Ball angle:ballModel.angle vectorDirection:ballDirection outputLine:ballFirstLineCoeffs];
-        CGPoint p2Ball = CGPointMake(p1Ball.x + ballModel.hDirection * (-1) * ball.size.width, p1Ball.y);
-        float ballSecondLineCoeffs[3];
-        [self getLineForPoint:p2Ball angle:ballModel.angle vectorDirection:ballDirection outputLine:ballSecondLineCoeffs];
+        CGPoint p1Actor1 = CGPointMake(actor1Center.x + actor1.size.width / 2 * actorModel.hDirection, actor1Center.y + actor1.size.height / 2 * actorModel.vDirection);
+        float actor1FirstLineCoeffs[3];
+        [self getLineForPoint:p1Actor1 angle:actorModel.angle vectorDirection:actor1Direction outputLine:actor1FirstLineCoeffs];
+        
+        CGPoint p2Actor1 = CGPointMake(p1Actor1.x + actorModel.hDirection * (-1) * (actor1.size.width), p1Actor1.y);
+        float actor1SecondLineCoeffs[3];
+        [self getLineForPoint:p2Actor1 angle:actorModel.angle vectorDirection:actor1Direction outputLine:actor1SecondLineCoeffs];
         
         int vDirection[2] = {0, 1};
         int hDirection[2] = {1, 0};
@@ -86,7 +87,8 @@
         collision->vCol = YES;
         collision->collisionPoint = hPoint;
         isLineCollision = YES;
-    } else if (vPoint.y >= object.origin.y && vPoint.y <= (object.origin.y + object.size.height)) {
+    }
+    if (vPoint.y >= object.origin.y && vPoint.y <= (object.origin.y + object.size.height)) {
         collision->hCol = YES;
         collision->collisionPoint = vPoint;
         isLineCollision = YES;

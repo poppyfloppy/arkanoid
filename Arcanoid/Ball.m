@@ -13,14 +13,13 @@
 @synthesize radius;
 @synthesize speed;
 @synthesize color;
-@synthesize hDirection, vDirection;
 
 -(id)init {
     self = [super init];
     if (self) {
         [self setRadius:8];
-        [self setSettingsSpeed:35];
-        [self setSpeed:35];
+        [self setSettingsSpeed:5];
+        [self setSpeed:5];
         [self setAngle:45];
         [self setVDirection:-1];
         [self setHDirection:1];

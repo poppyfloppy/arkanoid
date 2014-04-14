@@ -39,25 +39,25 @@
     CGRect screenRect = [[UIScreen mainScreen] bounds];
     
     infoView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenRect.size.width, 0.1 * screenRect.size.height)];
-    gameFieldView = [[UIView alloc] initWithFrame:CGRectMake(0, infoView.bounds.size.height, screenRect.size.width, screenRect.size.height * 0.8)];
-    controlView = [[ControlView alloc] initWithFrame:CGRectMake(0, infoView.bounds.size.height + gameFieldView.bounds.size.height, screenRect.size.width, screenRect.size.height * 0.1)];
+    gameFieldView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, mainView.frame.size.width, mainView.frame.size.height * 0.9)];
+    controlView = [[ControlView alloc] initWithFrame:CGRectMake(0, gameFieldView.bounds.size.height, mainView.frame.size.width, mainView.frame.size.height * 0.1)];
     
     explosionView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
-    [self initInfoView];
+//    [self initInfoView];
     [self initExplosionView];
     
-    stickView = [[StickView alloc] initWithFrame:CGRectMake(screenRect.size.width / 2 - 30, gameFieldView.bounds.origin.y + gameFieldView.bounds.size.height - 15, 60, 10)];
+    stickView = [[StickView alloc] initWithFrame:CGRectMake(mainView.frame.size.width / 2 - 30, gameFieldView.bounds.origin.y + gameFieldView.bounds.size.height - 15, 60, 10)];
     [stickView setBackgroundColor:[UIColor whiteColor]];
     
     Ball *ball  = [Ball sharedBall];
-    ballView = [[BallView alloc] initWithPoint:CGPointMake(screenRect.size.width / 2 - [ball radius], stickView.frame.origin.y - 2 * [ball radius]) radius:[ball radius] andColor:[ball color]];
+    ballView = [[BallView alloc] initWithPoint:CGPointMake(mainView.frame.size.width / 2 - [ball radius], stickView.frame.origin.y - 2 * [ball radius]) radius:[ball radius] andColor:[ball color]];
     
     [self createBrickModels];
     [self createBrickViews];
     
-    [self.view addSubview:gameFieldView];
-    [self.view addSubview:controlView];
-    [self.view addSubview:infoView];
+    [mainView addSubview:gameFieldView];
+    [mainView addSubview:controlView];
+//    [self.view addSubview:infoView];
     
     [gameFieldView addSubview:ballView];
     [gameFieldView addSubview:stickView];
@@ -78,7 +78,7 @@
 }
 
 -(void) initInfoView {
-    [infoView setBackgroundColor:[UIColor blackColor]];
+    [infoView setBackgroundColor:[UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.5f]];
     scoreLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     [self updateScore];
     [scoreLabel setTextColor:[UIColor whiteColor]];
@@ -200,17 +200,19 @@
     Ball *ballModel = [Ball sharedBall];
     float dx = ballModel.hDirection * (cos(M_PI / 180 * [ballModel angle]) * [ballModel speed] + 50);
     float dy = ballModel.vDirection * (sin(M_PI / 180 * [ballModel angle]) * [ballModel speed] + 50);
-    CGPoint ballNextDirectCenter = CGPointMake(ballView.center.x + dx, ballView.center.y + dy);
+    CGPoint p1Ball = CGPointMake(ballView.center.x + ballView.frame.size.width / 2 * ballModel.hDirection, ballView.center.y + ballView.frame.size.height / 2 * ballModel.vDirection);
+    CGPoint p2Ball = CGPointMake(p1Ball.x + ballModel.hDirection * (-1) * (ballView.frame.size.width - 5), p1Ball.y);
+    CGPoint ballNextDirectCenter = CGPointMake(p2Ball.x + dx, p2Ball.y + dy);
     Collision *collision = [[Collision alloc] initWithBall:ballView.frame andObject:CGRectZero];
     float line[3];
     [collision getLineCoeffs:ballView.center :ballNextDirectCenter :line];
-    CGPoint p1 = CGPointMake(ballView.center.x, - line[2] / line[1] - ballView.center.x * line[0] / line[1]);
+    CGPoint p1 = CGPointMake(p2Ball.x, - line[2] / line[1] - ballView.center.x * line[0] / line[1]);
     NSLog(@"center [%f, %f] =? [%f, %f]", ballView.center.x, ballView.center.y, p1.x, p1.y);
     CGRect screenRect = gameFieldView.frame;
     float x = screenRect.size.width;
     CGPoint p2 = CGPointMake(100, - line[2] / line[1] - x * line[0]);
     points = malloc(2 * sizeof(CGPoint));
-    points[0] = ballView.center;
+    points[0] = p2Ball;
     points[1] = ballNextDirectCenter;
     ballLine = [[LineView alloc] initWithPoints:points :2];
     [gameFieldView addSubview:ballLine];
@@ -239,20 +241,6 @@
         [stickView setCenter:CGPointMake([[UIScreen mainScreen] bounds].size.width - stickView.bounds.size.width / 2, stickView.center.y)];
     }
 }
-
--(void) checkStickCollision {
-    Ball *ball = [Ball sharedBall];
-    Collision *stickCollision = [[Collision alloc] initWithBall:ballView.frame andObject:stickView.frame];
-    CollisionStruct collision = [stickCollision forecastCollisionBall];
-    if (collision.distance <= 0.5f) {
-        if (collision.hCol)
-            [ball setHDirection:[ball hDirection] * -1];
-        if (collision.vCol)
-            [ball setVDirection:[ball vDirection] * -1];
-    }
-    if (collision.distance > 0)
-        [self optimazeCurrentSpeed:collision.distance];
-}
         
 -(void) optimazeCurrentSpeed : (float) distance {
     Ball *ball = [Ball sharedBall];
@@ -279,13 +267,32 @@
 Участок кода где проверяются коллизии
 */
 
+-(void) checkStickCollision {
+    Ball *ball = [Ball sharedBall];
+    Collision *stickCollision = [[Collision alloc] initWithBall:ballView.frame andObject:stickView.frame];
+    CollisionStruct collision = [stickCollision forecastCollisionBall];
+    if (collision.distance <= 1.0f && collision.distance > 0) {
+//        NSLog(@"stick collision");
+//        CGPoint collisionPoint = collision.collisionPoint;
+//        float k = (stickView.frame.origin.x + stickView.frame.size.width / 2) / 30;
+//        float i = stickView.frame.size.width / 2 - fabs(stickView.frame.origin.x + stickView.frame.size.width / 2 - collisionPoint.x);
+//        [ball setAngle: k * i];
+        if (collision.hCol)
+            [ball setHDirection:[ball hDirection] * -1];
+        if (collision.vCol)
+            [ball setVDirection:[ball vDirection] * -1];
+    }
+    if (collision.distance > 0)
+        [self optimazeCurrentSpeed:collision.distance];
+}
+
 -(BOOL) isWallCollision {
     CGPoint ballCenter = ballView.center;
-    if (gameFieldView.frame.size.width - ballCenter.x - ballView.frame.size.width / 2 < 1 && [[Ball sharedBall] hDirection] == 1) {
+    if (gameFieldView.frame.size.width - ballCenter.x - ballView.frame.size.width / 2 < 2 && [[Ball sharedBall] hDirection] == 1) {
         NSLog(@"wall collision");
         return YES;
     }
-    else if (ballCenter.x - ballView.frame.size.width / 2 < 1 && [[Ball sharedBall] hDirection] == -1) {
+    else if (ballCenter.x - ballView.frame.size.width / 2 < 2 && [[Ball sharedBall] hDirection] == -1) {
         NSLog(@"wall collision");
         return YES;
     } else
@@ -336,7 +343,7 @@
             distance = c.distance;
         }
         
-        if (c.distance >= 0 && c.distance < 0.5f) {
+        if (c.distance >= 0 && c.distance < 1.5f) {
             [self brickCollision:key];
             if (c.hCol)
                 [ball setHDirection: [ball hDirection] * (-1)];
