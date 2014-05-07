@@ -69,7 +69,9 @@
     
     [self addCountdown];
     
-    displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(render)];
+    
+    prevTime = [Utils getTime];
+    displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(gameLoop)];
     [displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
 }
 
@@ -184,8 +186,10 @@
 /*
 Игровой цикл
 */
--(void)render {
+-(void)gameLoop {
     if (isRunning) {
+//        int fps = 1 / [self delta];
+//        [fpsLabel setText:[NSString stringWithFormat:@"FPS: %i", fps]];
 //        [self drawLine];
         [self stickControl];
         [self ballMoving];
@@ -203,7 +207,7 @@
     CGPoint p1Ball = CGPointMake(ballView.center.x + ballView.frame.size.width / 2 * ballModel.hDirection, ballView.center.y + ballView.frame.size.height / 2 * ballModel.vDirection);
     CGPoint p2Ball = CGPointMake(p1Ball.x + ballModel.hDirection * (-1) * (ballView.frame.size.width - 5), p1Ball.y);
     CGPoint ballNextDirectCenter = CGPointMake(p2Ball.x + dx, p2Ball.y + dy);
-    Collision *collision = [[Collision alloc] initWithBall:ballView.frame andObject:CGRectZero];
+    Collision *collision = [[Collision alloc] initWithActor:ballModel :ballView.frame andObject:CGRectZero];
     float line[3];
     [collision getLineCoeffs:ballView.center :ballNextDirectCenter :line];
     CGPoint p1 = CGPointMake(p2Ball.x, - line[2] / line[1] - ballView.center.x * line[0] / line[1]);
@@ -224,8 +228,8 @@
 
 -(void) ballMoving {
     Ball *ball = [Ball sharedBall];
-    float dx = ball.hDirection * cos(M_PI / 180 * [ball angle]) * [ball speed];
-    float dy = ball.vDirection * sin(M_PI / 180 * [ball angle]) * [ball speed];
+    float dx = ball.hDirection * cos(M_PI / 180 * [ball angle]) * [ball speed] * [self delta];
+    float dy = ball.vDirection * sin(M_PI / 180 * [ball angle]) * [ball speed] * [self delta];
     [ballView setCenter:CGPointMake(ballView.center.x + dx, ballView.center.y + dy)];
     [ballView setNeedsDisplay];
 }
@@ -269,7 +273,7 @@
 
 -(void) checkStickCollision {
     Ball *ball = [Ball sharedBall];
-    Collision *stickCollision = [[Collision alloc] initWithBall:ballView.frame andObject:stickView.frame];
+    Collision *stickCollision = [[Collision alloc] initWithActor:ball :ballView.frame andObject:stickView.frame];
     CollisionStruct collision = [stickCollision forecastCollisionBall];
     if (collision.distance <= 1.0f && collision.distance > 0) {
 //        NSLog(@"stick collision");
@@ -337,7 +341,7 @@
     float distance = -1;
     for (NSString *key in [brickViews allKeys]) {
         BrickView *brickView = [brickViews objectForKey:key];
-        Collision *collision = [[Collision alloc] initWithBall:ballView.frame andObject:brickView.frame];
+        Collision *collision = [[Collision alloc] initWithActor:ball :ballView.frame andObject:brickView.frame];
         CollisionStruct c = [collision forecastCollisionBall];
         if (distance < 0 || (distance > c.distance && c.distance > 0)) {
             distance = c.distance;
@@ -392,6 +396,14 @@
             }
         }
     }
+}
+
+-(double)delta {
+    double time = [Utils getTime];
+    double delta = time - prevTime;
+    prevTime = time;
+    
+    return delta;
 }
 
 @end

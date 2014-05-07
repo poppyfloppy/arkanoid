@@ -15,7 +15,7 @@
     if (self) {
         actorModel = actor;
         actor1 = actor1Frame;
-        actor2 = actor2Frame;
+        object = actor2Frame;
     }
     
     return self;
@@ -53,27 +53,27 @@
         int hDirection[2] = {1, 0};
         CGPoint objectCenter =  [self getCenterCGRect:object];
         
-        CGPoint p1Object = CGPointMake(objectCenter.x - object.size.width / 2 * ballModel.hDirection, objectCenter.y);
-        CGPoint p2Object = CGPointMake(objectCenter.x, objectCenter.y - object.size.height / 2 * ballModel.vDirection);
+        CGPoint p1Object = CGPointMake(objectCenter.x - object.size.width / 2 * actorModel.hDirection, objectCenter.y);
+        CGPoint p2Object = CGPointMake(objectCenter.x, objectCenter.y - object.size.height / 2 * actorModel.vDirection);
         float line1Coeffs[3];
         [self getLineForPoint:p1Object angle:90 vectorDirection:vDirection outputLine:line1Coeffs];
 
         float line2Coeffs[3];
         [self getLineForPoint:p2Object angle:0 vectorDirection:hDirection outputLine:line2Coeffs];
         
-        CGPoint l1Balll1Object = [self getCollisionPoint:ballFirstLineCoeffs :line1Coeffs];
-        CGPoint l1Balll2Object = [self getCollisionPoint:ballFirstLineCoeffs :line2Coeffs];
+        CGPoint l1Balll1Object = [self getCollisionPoint:actor1FirstLineCoeffs :line1Coeffs];
+        CGPoint l1Balll2Object = [self getCollisionPoint:actor1FirstLineCoeffs :line2Coeffs];
         
-        CGPoint l2Balll1Object = [self getCollisionPoint:ballSecondLineCoeffs :line1Coeffs];
-        CGPoint l2Balll2Object = [self getCollisionPoint:ballSecondLineCoeffs :line2Coeffs];
+        CGPoint l2Balll1Object = [self getCollisionPoint:actor1SecondLineCoeffs :line1Coeffs];
+        CGPoint l2Balll2Object = [self getCollisionPoint:actor1SecondLineCoeffs :line2Coeffs];
         
         if ([self isLineCollision:forecastCollision :l1Balll2Object :l1Balll1Object]) {
             CGPoint collisionPoint = forecastCollision->collisionPoint;
-            CGPoint collisonBallPoint = CGPointMake(ballModel.hDirection * ball.size.width / 2 + ballCenter.x, ballModel.vDirection * ball.size.height / 2 + ballCenter.y);
+            CGPoint collisonBallPoint = CGPointMake(actorModel.hDirection * actor1.size.width / 2 + actor1Center.x, actorModel.vDirection * actor1.size.height / 2 + actor1Center.y);
             forecastCollision->distance = sqrtf(fabsf(collisionPoint.x - collisonBallPoint.x) * fabsf(collisionPoint.x - collisonBallPoint.x) + fabsf(collisionPoint.y - collisonBallPoint.y) * fabsf(collisionPoint.y - collisonBallPoint.y));
         } else if ([self isLineCollision: forecastCollision :l2Balll2Object :l2Balll1Object]) {
             CGPoint collisionPoint = forecastCollision->collisionPoint;
-            CGPoint collisonBallPoint = CGPointMake(ballModel.hDirection * (-1) * ball.size.width / 2 + ballCenter.x, ballModel.vDirection * ball.size.height / 2 + ballCenter.y);
+            CGPoint collisonBallPoint = CGPointMake(actorModel.hDirection * (-1) * actor1.size.width / 2 + actor1Center.x, actorModel.vDirection * actor1.size.height / 2 + actor1Center.y);
             forecastCollision->distance = sqrtf(fabsf(collisionPoint.x - collisonBallPoint.x) * fabsf(collisionPoint.x - collisonBallPoint.x) + fabsf(collisionPoint.y - collisonBallPoint.y) * fabsf(collisionPoint.y - collisonBallPoint.y));
         } else
             forecastCollision->distance = -1.0f;
@@ -98,10 +98,10 @@
 }
 
 -(BOOL) isObjectFront {
-    if ([ballModel vDirection] == 1 && ball.origin.y < object.origin.y) {
+    if ([actorModel vDirection] == 1 && actor1.origin.y < object.origin.y) {
         return YES;
     }
-    if ([ballModel vDirection] == -1 && ball.origin.y > object.origin.y) {
+    if ([actorModel vDirection] == -1 && actor1.origin.y > object.origin.y) {
         return YES;
     }
     

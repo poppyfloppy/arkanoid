@@ -19,7 +19,7 @@ typedef struct {
 @interface Collision : NSObject {
     Actor* actorModel;
     CGRect actor1;
-    CGRect actor2;
+    CGRect object;
 }
 
 -(id) initWithActor: (Actor*) actor: (CGRect) actor1Frame andObject: (CGRect) actor2Frame;

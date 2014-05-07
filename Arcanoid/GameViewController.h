@@ -13,6 +13,7 @@
 #import "InfoView.h"
 #import "Collision.h"
 #import "LineView.h"
+#import "Utils.h"
 
 #define EXPLOSION_NUMBER_PICTURES 48
 
@@ -45,8 +46,12 @@
     CGPoint *points;
     LineView *ballLine;
     __weak IBOutlet UIView *mainView;
+    __weak IBOutlet UILabel *fpsLabel;
+    
+    double prevTime;
 }
 
 -(void)render;
+-(double)delta;
 
 @end
