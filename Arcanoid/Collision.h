@@ -26,5 +26,7 @@ typedef struct {
 
 -(CollisionStruct) forecastCollisionBall;
 -(void) getLineCoeffs : (CGPoint)p1 : (CGPoint)p2 : (float*) coeffs;
+-(CollisionStruct) checkBorderCollisionInRect;
+-(CollisionStruct) forecastBorderCollsiion: (CGRect) actor andFrame: (CGRect) frame;
 
 @end

@@ -24,6 +24,10 @@
     return touch;
 }
 
+-(void)setTouch:(CGPoint)point {
+    touch = point;
+}
+
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     for (UITouch *t in touches) {

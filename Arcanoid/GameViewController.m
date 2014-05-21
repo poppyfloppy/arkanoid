@@ -46,53 +46,66 @@
 //    [self initInfoView];
     [self initExplosionView];
     
+    [self createBrickModels];
+    [self createBrickViews];
+    
     stickView = [[StickView alloc] initWithFrame:CGRectMake(mainView.frame.size.width / 2 - 30, gameFieldView.bounds.origin.y + gameFieldView.bounds.size.height - 15, 60, 10)];
     [stickView setBackgroundColor:[UIColor whiteColor]];
     
     Ball *ball  = [Ball sharedBall];
     ballView = [[BallView alloc] initWithPoint:CGPointMake(mainView.frame.size.width / 2 - [ball radius], stickView.frame.origin.y - 2 * [ball radius]) radius:[ball radius] andColor:[ball color]];
     
-    [self createBrickModels];
-    [self createBrickViews];
+    defaultBallCenter = ballView.center;
+    defaultStickCenter = stickView.center;
     
+    [gameFieldView addSubview:ballView];
+    [gameFieldView addSubview:stickView];
     [mainView addSubview:gameFieldView];
     [mainView addSubview:controlView];
 //    [self.view addSubview:infoView];
     
-    [gameFieldView addSubview:ballView];
-    [gameFieldView addSubview:stickView];
     [gameFieldView addSubview:explosionView];
     for (NSString *key in brickViews) {
         BrickView *brickView = [brickViews objectForKey:key];
         [gameFieldView addSubview:brickView];
     }
     
-    [self addCountdown];
+    [scoreLabel setAdjustsFontSizeToFitWidth:YES];
     
+    [self addCountdown];
     
     prevTime = [Utils getTime];
     displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(gameLoop)];
     [displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
 }
 
+-(void) restoreBallStick {
+    [stickView setCenter:defaultStickCenter];
+    [ballView setCenter:defaultBallCenter];
+    [controlView setTouch:defaultStickCenter];
+    
+    [ballView setNeedsDisplay];
+    [stickView setNeedsDisplay];
+}
+
 -(NSString*) scoreString {
     return [NSString stringWithFormat:@"Счет: %i", score];
 }
 
--(void) initInfoView {
-    [infoView setBackgroundColor:[UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.5f]];
-    scoreLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    [self updateScore];
-    [scoreLabel setTextColor:[UIColor whiteColor]];
-    [scoreLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [scoreLabel setFont:[UIFont boldSystemFontOfSize:15.0f]];
-    
-    [infoView addSubview:scoreLabel];
-    NSLayoutConstraint *centerXConstraint = [NSLayoutConstraint constraintWithItem:scoreLabel attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:infoView attribute:NSLayoutAttributeCenterX multiplier:1.0f constant:0.0f];
-    NSLayoutConstraint *centerYConstraint = [NSLayoutConstraint constraintWithItem:scoreLabel attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:infoView attribute:NSLayoutAttributeCenterY multiplier:1.0f constant:0.0f];
-    [infoView addConstraints:@[centerXConstraint, centerYConstraint]];
-
-}
+//-(void) initInfoView {
+//    [infoView setBackgroundColor:[UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.5f]];
+//    scoreLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+//    [self updateScore];
+//    [scoreLabel setTextColor:[UIColor whiteColor]];
+//    [scoreLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+//    [scoreLabel setFont:[UIFont boldSystemFontOfSize:15.0f]];
+//    
+//    [infoView addSubview:scoreLabel];
+//    NSLayoutConstraint *centerXConstraint = [NSLayoutConstraint constraintWithItem:scoreLabel attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:infoView attribute:NSLayoutAttributeCenterX multiplier:1.0f constant:0.0f];
+//    NSLayoutConstraint *centerYConstraint = [NSLayoutConstraint constraintWithItem:scoreLabel attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:infoView attribute:NSLayoutAttributeCenterY multiplier:1.0f constant:0.0f];
+//    [infoView addConstraints:@[centerXConstraint, centerYConstraint]];
+//
+//}
 
 -(void) initExplosionView {
     [explosionView setAnimationImages: explosionPics];
@@ -145,9 +158,9 @@
         [countdownLabel setHidden:YES];
         [self startGame];
     }
-    ;
 }
 
+//Стартовая инициализация кирпичей
 -(void) createBrickModels {
     int i = 8;
     int j = 7;
@@ -200,36 +213,37 @@
     }
 }
 
--(void) drawLine {
-    Ball *ballModel = [Ball sharedBall];
-    float dx = ballModel.hDirection * (cos(M_PI / 180 * [ballModel angle]) * [ballModel speed] + 50);
-    float dy = ballModel.vDirection * (sin(M_PI / 180 * [ballModel angle]) * [ballModel speed] + 50);
-    CGPoint p1Ball = CGPointMake(ballView.center.x + ballView.frame.size.width / 2 * ballModel.hDirection, ballView.center.y + ballView.frame.size.height / 2 * ballModel.vDirection);
-    CGPoint p2Ball = CGPointMake(p1Ball.x + ballModel.hDirection * (-1) * (ballView.frame.size.width - 5), p1Ball.y);
-    CGPoint ballNextDirectCenter = CGPointMake(p2Ball.x + dx, p2Ball.y + dy);
-    Collision *collision = [[Collision alloc] initWithActor:ballModel :ballView.frame andObject:CGRectZero];
-    float line[3];
-    [collision getLineCoeffs:ballView.center :ballNextDirectCenter :line];
-    CGPoint p1 = CGPointMake(p2Ball.x, - line[2] / line[1] - ballView.center.x * line[0] / line[1]);
-    NSLog(@"center [%f, %f] =? [%f, %f]", ballView.center.x, ballView.center.y, p1.x, p1.y);
-    CGRect screenRect = gameFieldView.frame;
-    float x = screenRect.size.width;
-    CGPoint p2 = CGPointMake(100, - line[2] / line[1] - x * line[0]);
-    points = malloc(2 * sizeof(CGPoint));
-    points[0] = p2Ball;
-    points[1] = ballNextDirectCenter;
-    ballLine = [[LineView alloc] initWithPoints:points :2];
-    [gameFieldView addSubview:ballLine];
-}
+//-(void) drawLine {
+//    Ball *ballModel = [Ball sharedBall];
+//    float dx = ballModel.hDirection * (cos(M_PI / 180 * [ballModel angle]) * [ballModel speed] + 50);
+//    float dy = ballModel.vDirection * (sin(M_PI / 180 * [ballModel angle]) * [ballModel speed] + 50);
+//    CGPoint p1Ball = CGPointMake(ballView.center.x + ballView.frame.size.width / 2 * ballModel.hDirection, ballView.center.y + ballView.frame.size.height / 2 * ballModel.vDirection);
+//    CGPoint p2Ball = CGPointMake(p1Ball.x + ballModel.hDirection * (-1) * (ballView.frame.size.width - 5), p1Ball.y);
+//    CGPoint ballNextDirectCenter = CGPointMake(p2Ball.x + dx, p2Ball.y + dy);
+//    Collision *collision = [[Collision alloc] initWithActor:ballModel :ballView.frame andObject:CGRectZero];
+//    float line[3];
+//    [collision getLineCoeffs:ballView.center :ballNextDirectCenter :line];
+//    CGPoint p1 = CGPointMake(p2Ball.x, - line[2] / line[1] - ballView.center.x * line[0] / line[1]);
+//    NSLog(@"center [%f, %f] =? [%f, %f]", ballView.center.x, ballView.center.y, p1.x, p1.y);
+//    CGRect screenRect = gameFieldView.frame;
+//    float x = screenRect.size.width;
+//    CGPoint p2 = CGPointMake(100, - line[2] / line[1] - x * line[0]);
+//    points = malloc(2 * sizeof(CGPoint));
+//    points[0] = p2Ball;
+//    points[1] = ballNextDirectCenter;
+//    ballLine = [[LineView alloc] initWithPoints:points :2];
+//    [gameFieldView addSubview:ballLine];
+//}
 
--(void) ballAnimation {
-
-}
+//-(void) ballAnimation {
+//
+//}
 
 -(void) ballMoving {
     Ball *ball = [Ball sharedBall];
-    float dx = ball.hDirection * cos(M_PI / 180 * [ball angle]) * [ball speed] * [self delta];
-    float dy = ball.vDirection * sin(M_PI / 180 * [ball angle]) * [ball speed] * [self delta];
+    double d = [self delta];
+    float dx = ball.hDirection * cos(M_PI / 180 * [ball angle]) * [ball speed];
+    float dy = ball.vDirection * sin(M_PI / 180 * [ball angle]) * [ball speed];
     [ballView setCenter:CGPointMake(ballView.center.x + dx, ballView.center.y + dy)];
     [ballView setNeedsDisplay];
 }
@@ -263,7 +277,10 @@
         [ball setVDirection:[ball vDirection] * -1];
     }
     if ([self isFloorCollision]) {
-        isRunning = NO;
+//        isRunning = NO;
+        [ball setVDirection:[ball vDirection] * -1];
+        [self restoreBallStick];
+//        [self startGame];
     }
 }
 

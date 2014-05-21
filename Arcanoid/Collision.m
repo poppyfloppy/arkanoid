@@ -35,6 +35,38 @@
     collision->vCol = NO;
 }
 
+//-(CollisionStruct)forecastBorderCollsiion:(CGRect)actor andFrame:(CGRect)frame {
+//    CollisionStruct forecastCollision;
+//    [self emptyCollisionStruct: &forecastCollision];
+////    CGPoint ballCenter = ballView.center;
+////    if (gameFieldView.frame.size.width - ballCenter.x - ballView.frame.size.width / 2 < 2 && [[Ball sharedBall] hDirection] == 1) {
+////        NSLog(@"wall collision");
+////        return YES;
+////    }
+////    else if (ballCenter.x - ballView.frame.size.width / 2 < 2 && [[Ball sharedBall] hDirection] == -1) {
+////        NSLog(@"wall collision");
+////        return YES;
+////    } else
+////        return NO;
+////    }
+////
+////    -(BOOL) isRoofCollision {
+////    if (ballView.center.y - ballView.frame.size.height / 2 < 1 && [[Ball sharedBall] vDirection] == -1) {
+////        return YES;
+////    }
+////    return NO;
+////    }
+////
+////    -(BOOL) isFloorCollision {
+////    if (gameFieldView.frame.size.height - ballView.center.y - ballView.frame.size.height / 2 < 1 && [[Ball sharedBall] vDirection] == 1) {
+////        return YES;
+////    }
+////    return NO;
+//
+//    
+//    return forecastCollision;
+//}
+
 -(void) forecastCollision: (CollisionStruct*) forecastCollision {
     if ([self isObjectFront]) {
     

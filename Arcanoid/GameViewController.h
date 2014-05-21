@@ -23,6 +23,8 @@
     BallView *ballView;
     StickView *stickView;
     ControlView *controlView;
+    CGPoint defaultBallCenter;
+    CGPoint defaultStickCenter;
     UIView *gameFieldView;
     
     UILabel *countdownLabel;
@@ -35,8 +37,6 @@
     UIView *infoView;
     UILabel *scoreLabel;
     int score;
-    
-    InfoView *info;
     
     BOOL isRunning;
     

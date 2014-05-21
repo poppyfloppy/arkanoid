@@ -13,5 +13,6 @@
 }
 
 -(CGPoint)getTouch;
+-(void)setTouch:(CGPoint)point;
 
 @end
