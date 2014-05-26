@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		FB116BCC1917D94F0026017F /* DeltaTime.m in Sources */ = {isa = PBXBuildFile; fileRef = FB116BCB1917D94F0026017F /* DeltaTime.m */; };
 		FB116BCF19183C230026017F /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = FB116BCE19183C230026017F /* Utils.m */; };
+		FB71E3D71932974400D8D57D /* CountdownView.m in Sources */ = {isa = PBXBuildFile; fileRef = FB71E3D61932974400D8D57D /* CountdownView.m */; };
 		FB7EFF9A18F5F54700AF7895 /* Actor.m in Sources */ = {isa = PBXBuildFile; fileRef = FB7EFF9918F5F54700AF7895 /* Actor.m */; };
 		FB848A6518BB558B004E538F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB848A6418BB558B004E538F /* Foundation.framework */; };
 		FB848A6718BB558B004E538F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB848A6618BB558B004E538F /* CoreGraphics.framework */; };
@@ -54,6 +55,8 @@
 		FB116BCB1917D94F0026017F /* DeltaTime.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeltaTime.m; sourceTree = "<group>"; };
 		FB116BCD19183C230026017F /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
 		FB116BCE19183C230026017F /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utils.m; sourceTree = "<group>"; };
+		FB71E3D51932974400D8D57D /* CountdownView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountdownView.h; sourceTree = "<group>"; };
+		FB71E3D61932974400D8D57D /* CountdownView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountdownView.m; sourceTree = "<group>"; };
 		FB7EFF9818F5F54700AF7895 /* Actor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Actor.h; sourceTree = "<group>"; };
 		FB7EFF9918F5F54700AF7895 /* Actor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Actor.m; sourceTree = "<group>"; };
 		FB848A6118BB558B004E538F /* Arcanoid.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Arcanoid.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -194,6 +197,8 @@
 				FB116BCB1917D94F0026017F /* DeltaTime.m */,
 				FB116BCD19183C230026017F /* Utils.h */,
 				FB116BCE19183C230026017F /* Utils.m */,
+				FB71E3D51932974400D8D57D /* CountdownView.h */,
+				FB71E3D61932974400D8D57D /* CountdownView.m */,
 			);
 			path = Arcanoid;
 			sourceTree = "<group>";
@@ -356,6 +361,7 @@
 				FBD0B53A18D7A7F800555116 /* InfoView.m in Sources */,
 				FBABB2FA18C639CC00400578 /* Brick.m in Sources */,
 				FBABB2ED18C32E0200400578 /* BallView.m in Sources */,
+				FB71E3D71932974400D8D57D /* CountdownView.m in Sources */,
 				FBABB2F418C3B44200400578 /* StickView.m in Sources */,
 				FB116BCC1917D94F0026017F /* DeltaTime.m in Sources */,
 				FB116BCF19183C230026017F /* Utils.m in Sources */,

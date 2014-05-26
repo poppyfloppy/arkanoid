@@ -21,8 +21,7 @@
         
         explosionPics = [[NSMutableArray alloc] init];
         explosionPics = [NSMutableArray new];
-        
-        countdownTextArray = [NSArray arrayWithObjects:@"3", @"2", @"1", @"GO!", nil];
+
         for (int i = 1; i <= EXPLOSION_NUMBER_PICTURES; i++) {
             [explosionPics addObject:[UIImage imageNamed:[NSString stringWithFormat:@"Explosion_%i", i]]];
         }
@@ -73,6 +72,7 @@
     [scoreLabel setAdjustsFontSizeToFitWidth:YES];
     
     [self addCountdown];
+    [countdownView countdownStartWithTarget:self andSelector:@selector(countdownFinish)];
     
     prevTime = [Utils getTime];
     displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(gameLoop)];
@@ -118,46 +118,16 @@
 }
                       
 -(void) addCountdown {
-    countdownLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    [countdownLabel setTextColor:[UIColor whiteColor]];
-    [countdownLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [countdownLabel setText:[countdownTextArray objectAtIndex:currentCountdownText]];
-    [countdownLabel setFont:[UIFont boldSystemFontOfSize:40.0f]];
-    [self.view addSubview:countdownLabel];
-    NSLayoutConstraint *centerXConstraint = [NSLayoutConstraint constraintWithItem:countdownLabel attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:[self view] attribute:NSLayoutAttributeCenterX multiplier:1.0f constant:0.0f];
-    NSLayoutConstraint *centerYConstraint = [NSLayoutConstraint constraintWithItem:countdownLabel attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:[self view] attribute:NSLayoutAttributeCenterY multiplier:1.0f constant:0.0f];
+    countdownView = [[CountdownView alloc] initWithTextArray:[NSArray arrayWithObjects:@"3", @"2", @"1", @"GO!", nil]];
+    [self.view addSubview:countdownView];
+    NSLayoutConstraint *centerXConstraint = [NSLayoutConstraint constraintWithItem:countdownView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:[self view] attribute:NSLayoutAttributeCenterX multiplier:1.0f constant:0.0f];
+    NSLayoutConstraint *centerYConstraint = [NSLayoutConstraint constraintWithItem:countdownView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:[self view] attribute:NSLayoutAttributeCenterY multiplier:1.0f constant:0.0f];
     [self.view addConstraints:@[centerXConstraint, centerYConstraint]];
-    
-    currentCountdownText++;
-    [self countdownAnimation];
 }
 
--(void) countdownAnimation {
-    CABasicAnimation *scaleAnimation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
-    [scaleAnimation setToValue:[NSNumber numberWithFloat:2]];
-    [scaleAnimation setDuration:1.0f];
-    [scaleAnimation setDelegate:self];
-    
-    CABasicAnimation *fadeAnimation = [CABasicAnimation animationWithKeyPath:@"opacity"];
-    [fadeAnimation setToValue:[NSNumber numberWithFloat:0.0f]];
-    [fadeAnimation setDuration:1.0f];
-    
-    CAAnimationGroup *group = [CAAnimationGroup animation];
-    [group setAnimations:[NSArray arrayWithObjects:fadeAnimation, scaleAnimation, nil]];
-    [group setDuration:1.0f];
-    [[countdownLabel layer] addAnimation:scaleAnimation forKey:@"countdownAnimation"];
-    [group setDelegate:self];
-}
-
--(void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag {
-    if (flag && currentCountdownText < [countdownTextArray count]) {
-        [countdownLabel setText:[countdownTextArray objectAtIndex:currentCountdownText]];
-        currentCountdownText++;
-        [self countdownAnimation];
-    } else if (flag && currentCountdownText == [countdownTextArray count]) {
-        [countdownLabel setHidden:YES];
-        [self startGame];
-    }
+-(void) countdownFinish {
+    [countdownView setHidden:YES];
+    [self startGame];
 }
 
 //Стартовая инициализация кирпичей

@@ -14,6 +14,7 @@
 #import "Collision.h"
 #import "LineView.h"
 #import "Utils.h"
+#import "CountdownView.h"
 
 #define EXPLOSION_NUMBER_PICTURES 48
 
@@ -27,9 +28,7 @@
     CGPoint defaultStickCenter;
     UIView *gameFieldView;
     
-    UILabel *countdownLabel;
-    NSArray *countdownTextArray;
-    int currentCountdownText;
+    CountdownView *countdownView;
     
     NSMutableArray *brickModels;
     NSMutableDictionary *brickViews;
