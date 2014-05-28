@@ -27,6 +27,7 @@
 -(void)countdownStartWithTarget:(id)target andSelector:(SEL)finishSelector {
     selector = finishSelector;
     _target = target;
+    current = 0;
     [self setText:[countdownTextArray objectAtIndex:current]];
     current++;
     [self countdownAnimation];

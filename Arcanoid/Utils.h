@@ -13,5 +13,6 @@
 }
 
 +(double) getTime;
++(NSString*) readFileByPath: (NSString*) path;
 
 @end

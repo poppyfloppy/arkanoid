@@ -10,6 +10,11 @@
 		FB116BCC1917D94F0026017F /* DeltaTime.m in Sources */ = {isa = PBXBuildFile; fileRef = FB116BCB1917D94F0026017F /* DeltaTime.m */; };
 		FB116BCF19183C230026017F /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = FB116BCE19183C230026017F /* Utils.m */; };
 		FB71E3D71932974400D8D57D /* CountdownView.m in Sources */ = {isa = PBXBuildFile; fileRef = FB71E3D61932974400D8D57D /* CountdownView.m */; };
+		FB71E3D919360EA200D8D57D /* hello.txt in Resources */ = {isa = PBXBuildFile; fileRef = FB71E3D819360EA200D8D57D /* hello.txt */; };
+		FB71E3DD19360FC800D8D57D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FB71E3DC19360FC800D8D57D /* Images.xcassets */; };
+		FB71E3DF1936101E00D8D57D /* hello.txt in Resources */ = {isa = PBXBuildFile; fileRef = FB71E3DE1936101E00D8D57D /* hello.txt */; };
+		FB71E3E31936154600D8D57D /* LevelBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = FB71E3E21936154600D8D57D /* LevelBuilder.m */; };
+		FB71E3E5193646F700D8D57D /* level3.txt in Resources */ = {isa = PBXBuildFile; fileRef = FB71E3E4193646F700D8D57D /* level3.txt */; };
 		FB7EFF9A18F5F54700AF7895 /* Actor.m in Sources */ = {isa = PBXBuildFile; fileRef = FB7EFF9918F5F54700AF7895 /* Actor.m */; };
 		FB848A6518BB558B004E538F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB848A6418BB558B004E538F /* Foundation.framework */; };
 		FB848A6718BB558B004E538F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB848A6618BB558B004E538F /* CoreGraphics.framework */; };
@@ -17,7 +22,6 @@
 		FB848A6F18BB558B004E538F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = FB848A6D18BB558B004E538F /* InfoPlist.strings */; };
 		FB848A7118BB558B004E538F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FB848A7018BB558B004E538F /* main.m */; };
 		FB848A7518BB558C004E538F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FB848A7418BB558C004E538F /* AppDelegate.m */; };
-		FB848A7718BB558C004E538F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FB848A7618BB558C004E538F /* Images.xcassets */; };
 		FB848A7E18BB558C004E538F /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB848A7D18BB558C004E538F /* XCTest.framework */; };
 		FB848A7F18BB558C004E538F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB848A6418BB558B004E538F /* Foundation.framework */; };
 		FB848A8018BB558C004E538F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB848A6818BB558B004E538F /* UIKit.framework */; };
@@ -57,6 +61,12 @@
 		FB116BCE19183C230026017F /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utils.m; sourceTree = "<group>"; };
 		FB71E3D51932974400D8D57D /* CountdownView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountdownView.h; sourceTree = "<group>"; };
 		FB71E3D61932974400D8D57D /* CountdownView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountdownView.m; sourceTree = "<group>"; };
+		FB71E3D819360EA200D8D57D /* hello.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = hello.txt; sourceTree = "<group>"; };
+		FB71E3DC19360FC800D8D57D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		FB71E3DE1936101E00D8D57D /* hello.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = hello.txt; sourceTree = "<group>"; };
+		FB71E3E11936154600D8D57D /* LevelBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LevelBuilder.h; sourceTree = "<group>"; };
+		FB71E3E21936154600D8D57D /* LevelBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LevelBuilder.m; sourceTree = "<group>"; };
+		FB71E3E4193646F700D8D57D /* level3.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = level3.txt; sourceTree = "<group>"; };
 		FB7EFF9818F5F54700AF7895 /* Actor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Actor.h; sourceTree = "<group>"; };
 		FB7EFF9918F5F54700AF7895 /* Actor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Actor.m; sourceTree = "<group>"; };
 		FB848A6118BB558B004E538F /* Arcanoid.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Arcanoid.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -69,7 +79,6 @@
 		FB848A7218BB558B004E538F /* Arcanoid-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Arcanoid-Prefix.pch"; sourceTree = "<group>"; };
 		FB848A7318BB558B004E538F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		FB848A7418BB558C004E538F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		FB848A7618BB558C004E538F /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		FB848A7C18BB558C004E538F /* ArcanoidTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ArcanoidTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FB848A7D18BB558C004E538F /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		FB848A8518BB558C004E538F /* ArcanoidTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ArcanoidTests-Info.plist"; sourceTree = "<group>"; };
@@ -128,6 +137,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		FB71E3E01936102900D8D57D /* Level */ = {
+			isa = PBXGroup;
+			children = (
+				FB71E3E4193646F700D8D57D /* level3.txt */,
+				FB71E3DE1936101E00D8D57D /* hello.txt */,
+				FB71E3E11936154600D8D57D /* LevelBuilder.h */,
+				FB71E3E21936154600D8D57D /* LevelBuilder.m */,
+			);
+			name = Level;
+			sourceTree = "<group>";
+		};
 		FB848A5818BB558B004E538F = {
 			isa = PBXGroup;
 			children = (
@@ -162,10 +182,12 @@
 		FB848A6A18BB558B004E538F /* Arcanoid */ = {
 			isa = PBXGroup;
 			children = (
+				FB71E3E01936102900D8D57D /* Level */,
+				FB71E3DC19360FC800D8D57D /* Images.xcassets */,
+				FBABB2F018C36E9200400578 /* star_bg.jpg */,
 				FBD0B53D18DC425D00555116 /* Collision */,
 				FB848A7318BB558B004E538F /* AppDelegate.h */,
 				FB848A7418BB558C004E538F /* AppDelegate.m */,
-				FB848A7618BB558C004E538F /* Images.xcassets */,
 				FB848A6B18BB558B004E538F /* Supporting Files */,
 				FB848A9318BB5695004E538F /* MenuViewController.h */,
 				FB848A9418BB5695004E538F /* MenuViewController.m */,
@@ -206,7 +228,7 @@
 		FB848A6B18BB558B004E538F /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				FBABB2F018C36E9200400578 /* star_bg.jpg */,
+				FB71E3D819360EA200D8D57D /* hello.txt */,
 				FB848A6C18BB558B004E538F /* Arcanoid-Info.plist */,
 				FB848A6D18BB558B004E538F /* InfoPlist.strings */,
 				FB848A7018BB558B004E538F /* main.m */,
@@ -325,8 +347,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				FB848A6F18BB558B004E538F /* InfoPlist.strings in Resources */,
+				FB71E3D919360EA200D8D57D /* hello.txt in Resources */,
+				FB71E3DF1936101E00D8D57D /* hello.txt in Resources */,
+				FB71E3E5193646F700D8D57D /* level3.txt in Resources */,
 				FB848A9718BB5695004E538F /* MenuViewController.xib in Resources */,
-				FB848A7718BB558C004E538F /* Images.xcassets in Resources */,
+				FB71E3DD19360FC800D8D57D /* Images.xcassets in Resources */,
 				FBABB2F118C36E9200400578 /* star_bg.jpg in Resources */,
 				FB848AA218BFC86B004E538F /* GameViewController.xib in Resources */,
 			);
@@ -365,6 +390,7 @@
 				FBABB2F418C3B44200400578 /* StickView.m in Sources */,
 				FB116BCC1917D94F0026017F /* DeltaTime.m in Sources */,
 				FB116BCF19183C230026017F /* Utils.m in Sources */,
+				FB71E3E31936154600D8D57D /* LevelBuilder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

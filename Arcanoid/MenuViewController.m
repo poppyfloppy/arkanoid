@@ -19,8 +19,7 @@
     return self;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     startButton.layer.borderWidth = 1.0f;
     startButton.layer.cornerRadius = 10;

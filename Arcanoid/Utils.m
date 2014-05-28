@@ -16,4 +16,11 @@
     return [now timeIntervalSince1970];
 }
 
++(NSString*) readFileByPath: (NSString*) name {
+    NSString *path = [[NSBundle mainBundle] pathForResource:name ofType:@"txt"];
+    NSString *file = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error: NULL];
+    
+    return file;
+}
+
 @end

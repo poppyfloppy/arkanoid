@@ -26,6 +26,7 @@
             [explosionPics addObject:[UIImage imageNamed:[NSString stringWithFormat:@"Explosion_%i", i]]];
         }
         isRunning = NO;
+
     }
     return self;
 }
@@ -33,7 +34,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self.view setBackgroundColor:[UIColor grayColor]];
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"star_bg.jpg"]]];
     CGRect screenRect = [[UIScreen mainScreen] bounds];
     
@@ -92,21 +92,6 @@
     return [NSString stringWithFormat:@"Счет: %i", score];
 }
 
-//-(void) initInfoView {
-//    [infoView setBackgroundColor:[UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.5f]];
-//    scoreLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-//    [self updateScore];
-//    [scoreLabel setTextColor:[UIColor whiteColor]];
-//    [scoreLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
-//    [scoreLabel setFont:[UIFont boldSystemFontOfSize:15.0f]];
-//    
-//    [infoView addSubview:scoreLabel];
-//    NSLayoutConstraint *centerXConstraint = [NSLayoutConstraint constraintWithItem:scoreLabel attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:infoView attribute:NSLayoutAttributeCenterX multiplier:1.0f constant:0.0f];
-//    NSLayoutConstraint *centerYConstraint = [NSLayoutConstraint constraintWithItem:scoreLabel attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:infoView attribute:NSLayoutAttributeCenterY multiplier:1.0f constant:0.0f];
-//    [infoView addConstraints:@[centerXConstraint, centerYConstraint]];
-//
-//}
-
 -(void) initExplosionView {
     [explosionView setAnimationImages: explosionPics];
     [explosionView setAnimationDuration:1.5];
@@ -132,38 +117,23 @@
 
 //Стартовая инициализация кирпичей
 -(void) createBrickModels {
-    int i = 8;
-    int j = 7;
-    for (int col = 0; col < i; col++) {
-        for (int row = 0; row < j; row++) {
-            Brick *brick = [[Brick alloc] init];
-            [brick setI:col];
-            [brick setJ:row];
-            [brick setHeight:15];
-            [brick setWidth:[Brick getOptimalWidthWithCol:i]];
-            if (row % 2 == 0) {
-                [brick setColor:[UIColor orangeColor]];
-            } else {
-                [brick setColor:[UIColor whiteColor]];
-            }
-            
-            [brickModels addObject:brick];
-        }
-    }
+    NSString *level = [Utils readFileByPath:@"level3"];
+    brickModels = [LevelBuilder generateBrickModelsFile:level];
 }
 
 -(void) createBrickViews {
     for (int i = 0; i < [brickModels count]; i++) {
         Brick *brick = [brickModels objectAtIndex:i];
-        CGPoint point = CGPointMake(brick.i * brick.width + 3 * (brick.i + 1), brick.j * brick.height + 3 * (brick.j + 1));
+        CGPoint point = CGPointMake(brick.j * brick.width + 3 * (brick.j + 1), brick.i * brick.height + 3 * (brick.i + 1));
         BrickView *brickView = [[BrickView alloc] initWithPoint:point andSize:CGSizeMake(brick.width, brick.height) andColor:[brick color]];
         
         [brickViews setObject:brickView forKey:[brick getKey]];
     }
 }
 
+
 -(void) startGame {
-    isRunning = YES;
+//    isRunning = YES;
 }
 
 /*
@@ -211,7 +181,6 @@
 
 -(void) ballMoving {
     Ball *ball = [Ball sharedBall];
-    double d = [self delta];
     float dx = ball.hDirection * cos(M_PI / 180 * [ball angle]) * [ball speed];
     float dy = ball.vDirection * sin(M_PI / 180 * [ball angle]) * [ball speed];
     [ballView setCenter:CGPointMake(ballView.center.x + dx, ballView.center.y + dy)];
@@ -247,10 +216,12 @@
         [ball setVDirection:[ball vDirection] * -1];
     }
     if ([self isFloorCollision]) {
-//        isRunning = NO;
+        isRunning = NO;
         [ball setVDirection:[ball vDirection] * -1];
+        [countdownView setHidden:NO];
+        [countdownView setCountdownTextArray:[NSArray arrayWithObject:@"GO!"]];
+        [countdownView countdownStartWithTarget:self andSelector:@selector(countdownFinish)];
         [self restoreBallStick];
-//        [self startGame];
     }
 }
 
@@ -354,35 +325,6 @@
     [explosionView setCenter:[brickView center]];
     [explosionView startAnimating];
     [self updateScore];
-}
-
--(void)collision : (CGRect) object {
-    Ball *ball = [Ball sharedBall];
-    CGPoint ballCenter = [ballView center];
-   
-    float h = object.size.height / 5;
-    float w = h;
-    int n = object.size.width / w;
-    int m = object.size.height / h;
-        
-    for (int i = 0; i < m; i++) {
-        for (int j = 0; j < n; j++) {
-            float originX = object.origin.x + j * w;
-            float originY = object.origin.y + i * h;
-            CGPoint center = CGPointMake(originX + w / 2, originY + h / 2);
-            float distance =  sqrtf(fabsf(ballCenter.x - center.x) * fabsf(ballCenter.x - center.x) + fabsf(ballCenter.y - center.y) * fabsf(ballCenter.y - center.y));
-            
-            if (distance  <=  (w / 2 + ballView.frame.size.height) / 2) {
-//                [self brickCollision:nearbyObject];
-//                nearbyObject = nil;
-//                if (collisionForecast.hCol)
-//                    [ball setHDirection: [ball hDirection] * -1];
-//                if (collisionForecast.vCol)
-//                    [ball setVDirection: [ball vDirection] * -1];
-                break;
-            }
-        }
-    }
 }
 
 -(double)delta {

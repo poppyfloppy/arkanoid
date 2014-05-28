@@ -15,6 +15,7 @@
 #import "LineView.h"
 #import "Utils.h"
 #import "CountdownView.h"
+#import "LevelBuilder.h"
 
 #define EXPLOSION_NUMBER_PICTURES 48
 
@@ -50,7 +51,6 @@
     double prevTime;
 }
 
--(void)render;
 -(double)delta;
 
 @end
